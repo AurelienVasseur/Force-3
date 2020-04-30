@@ -1,10 +1,14 @@
 import numpy as np
+import sys
+print (sys.path)
+print("\n")
+print("\n")
 import pygame
 from pygame.locals import *
 import math
 import os
 
-os.chdir("C:/Users/zerat/Onedrive/Documents/UTBm/S2/IA41/")
+os.chdir("C:/Users/zerat/Onedrive/Documents/UTBm/S2/IA41/Force-3")
 #             ----- Force 3 -----
 
 #Initialisation des modules de pygame
@@ -24,25 +28,24 @@ class Tablier:
 		self.grilleCarres=grilleCarres
 		self.grillePion=grillePion
 
-	def occuperCarre(i,j):
+	def occuperCarre(self,i,j):
 		if grilleCarres[i,j]==1:
 			return True
 		else:
 			return False
 		
-	def occuperPion(i,j):
+	def occuperPion(self,i,j):
 		if grillePion[i,j]==1:
 			return True
 		else:
 			return False	
 
 class Pion:
-	numero_pion=10
 
 	def _init_(self,couleur):
 		self.couleur=[]
 		self.emplacementPion=[]
-		self.numero=numero_pion
+		self.numero=10
 """
 	def right(self,i,j):
 		if (Tablier.occuperCarre(i,j) == False):
@@ -106,19 +109,21 @@ tablier=Tablier()
 
 
 
-
+"""
 #Création fenêtre
 fenetre = pygame.display.set_mode((840,680),RESIZABLE)
 fond = pygame.image.load("background.jpg").convert()
 fenetre.blit(fond, (0,0)) #Colle l'image en haut à gauche de la fenêtre de tracé (ici, l'ecran)
+"""
+
 
 #Affichage grille
-grid = pygame.image.load("grid.jpg").convert()
+grid = pygame.image.load("Image/grid.jpg")
 grid.set_colorkey((255,255,255)) #Rend le blanc (valeur RGB : 255,255,255) de l'image transparent
 fenetre.blit(grid,(0,0))
 
 #Affichage carré
-carre1=pygame.image.load("carre.jpg")
+carre1=pygame.image.load("Image/carre.jpg")
 carre=pygame.transform.scale(carre1,(400,400))
 position_carre=carre.get_rect()
 
