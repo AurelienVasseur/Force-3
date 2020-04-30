@@ -1,8 +1,4 @@
 import numpy as np
-import sys
-print (sys.path)
-print("\n")
-print("\n")
 import pygame
 from pygame.locals import *
 import math
@@ -109,12 +105,12 @@ tablier=Tablier()
 
 
 
-"""
+
 #Création fenêtre
 fenetre = pygame.display.set_mode((840,680),RESIZABLE)
-fond = pygame.image.load("background.jpg").convert()
+fond = pygame.image.load("Image/background.jpg").convert()
 fenetre.blit(fond, (0,0)) #Colle l'image en haut à gauche de la fenêtre de tracé (ici, l'ecran)
-"""
+
 
 
 #Affichage grille
