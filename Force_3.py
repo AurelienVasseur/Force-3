@@ -18,14 +18,14 @@ couleur=0
 grillePion = np.zeros([3,3])
 grilleCarres = np.zeros([3,3])
 magicNumber = 0
-positions_carres_init=[(0,25),(250,25),(500,25),(0,275),(500,500),(500,275),(0,500),(250,500)] #Position départ carrés
+positions_carres_init=[(0,25),(250,25),(500,25),(0,275),(500,525),(500,275),(0,525),(250,525)] #Position départ carrés
 positions_pion_init=[(750,50),(750,300),(750,550),(850,50),(850,300),(850,550)] #Position départ Pions
 deplacement = 250
 continuer = 1
 loop = True
 
 #Création fenêtre
-fenetre = pygame.display.set_mode((1000,680),RESIZABLE)
+fenetre = pygame.display.set_mode((1000,800),RESIZABLE)
 fond = pygame.image.load("Image/background.jpg").convert()
 fenetre.blit(fond, (0,0)) #Colle l'image en haut à gauche de la fenêtre de tracé (ici, l'ecran)
 
@@ -190,6 +190,7 @@ class Selecteur:
 		self.Select_rezise.set_colorkey((255,255,255)) #Rend le blanc (valeur RGB : 255,255,255) de l'image transparent
 		self.position_Select = self.Select_rezise.get_rect()
 		self.position_Select = self.position_Select.move(0,25)
+		self.coord=[0,0]
 	
 	def selecteurActif(self):
 		self.imageSelect = pygame.image.load("Image/selecteuractif.png")
@@ -205,13 +206,32 @@ class Selecteur:
 	
 	#Déplacements
 	def right(self):
-		self.position_Select = self.position_Select.move(deplacement,0)
+		i=self.coord[0]
+		j=self.coord[1]
+		if i<2:
+			self.coord=[i+1,j]
+			self.position_Select = self.position_Select.move(deplacement,0)
+		
 	def left(self):
-		self.position_Select = self.position_Select.move(-250,0)
+		i=self.coord[0]
+		j=self.coord[1]
+		if i>0:
+			self.coord=[i-1,j]
+			self.position_Select = self.position_Select.move(-deplacement,0)
 	def up(self):
-		self.position_Select = self.position_Select.move(0,-250)
+		i=self.coord[0]
+		j=self.coord[1]
+		if j>0:
+			self.coord=[i,j-1]
+			self.position_Select = self.position_Select.move(0,-deplacement)
+
 	def down(self):
-		self.position_Select = self.position_Select.move(0,deplacement)
+		i=self.coord[0]
+		j=self.coord[1]
+		if j<2:
+			self.coord=[i,j+1]
+			self.position_Select = self.position_Select.move(0,deplacement)
+		
 	
 
 
