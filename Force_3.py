@@ -79,10 +79,11 @@ class Pion:
 			self.imagePion = pygame.image.load("Image/pawnwhite.png")
 			self.Pion_rezise=pygame.transform.scale(self.imagePion,(100,100))			
 
+	#Déplacements
 	def right(self,tablier):
 		i=self.coord[0]
 		j=self.coord[1]
-		if (tablier.occuperPion(i+1,j) == False):
+		if (tablier.occuperPion(i+1,j) == False and i < 2):
 			self.coord=[i+1,j]
 			grillePion[i][j]=0
 			grillePion[i+1][j]=1
@@ -91,7 +92,7 @@ class Pion:
 	def left(self,tablier):
 		i=self.coord[0]
 		j=self.coord[1]
-		if (tablier.occuperPion(i-1,j) == False):
+		if (tablier.occuperPion(i-1,j) == False and i > 0):
 			self.coord=[i-1,j]
 			grillePion[i][j]=0
 			grillePion[i-1][j]=1
@@ -100,7 +101,7 @@ class Pion:
 	def up(self,tablier):
 		i=self.coord[0]
 		j=self.coord[1]
-		if (tablier.occuperPion(i,j+1) == False):
+		if (tablier.occuperPion(i,j+1) == False and j > 0):
 			self.coord=[i,j+1]
 			grillePion[i][j]=0
 			grillePion[i][j+1]=1
@@ -109,7 +110,7 @@ class Pion:
 	def down(self,tablier):
 		i=self.coord[0]
 		j=self.coord[1]
-		if (tablier.occuperPion(i,j-1) == False):
+		if (tablier.occuperPion(i,j-1) == False and j < 2):
 			self.coord=[i,j-1]
 			grillePion[i][j]=0
 			grillePion[i][j-1]=1
@@ -145,11 +146,11 @@ class Carres:
 		print(grilleCarres)
 		print("position initiale bien definie")
 
-
+	#Déplacements
 	def right(self,tablier):
 		i=self.coord[0]
 		j=self.coord[1]
-		if (tablier.occuperCarre(i+1,j) == False):
+		if (tablier.occuperCarre(i+1,j) == False and i < 2):
 			self.coord=[i+1,j]
 			grilleCarres[i][j]=0
 			grilleCarres[i+1][j]=1
@@ -158,7 +159,7 @@ class Carres:
 	def left(self,tablier):
 		i=self.coord[0]
 		j=self.coord[1]
-		if (tablier.occuperCarre(i-1,j) == False):
+		if (tablier.occuperCarre(i-1,j) == False and i > 0):
 			self.coord=[i-1,j]
 			grilleCarres[i][j]=0
 			grilleCarres[i-1][j]=1
@@ -167,7 +168,7 @@ class Carres:
 	def up(self,tablier):
 		i=self.coord[0]
 		j=self.coord[1]
-		if (tablier.occuperCarre(i,j+1) == False):
+		if (tablier.occuperCarre(i,j+1) == False and j > 0):
 			self.coord=[i,j+1]
 			grilleCarres[i][j]=0
 			grilleCarres[i][j+1]=1
@@ -176,15 +177,47 @@ class Carres:
 	def down(self,tablier):
 		i=self.coord[0]
 		j=self.coord[1]
-		if (tablier.occuperCarre(i,j-1) == False):
+		if (tablier.occuperCarre(i,j-1) == False and j < 2):
 			self.coord=[i,j-1]
 			grilleCarres[i][j]=0
 			grilleCarres[i][j-1]=1
 			self.position_carre.move(0,-deplacement)
 
+class Selecteur:
+	def __init__(self):
+		self.imageSelect = pygame.image.load("Image/selecteur.png")
+		self.Select_rezise=pygame.transform.scale(self.imageSelect,(200,200))
+		self.Select_rezise.set_colorkey((255,255,255)) #Rend le blanc (valeur RGB : 255,255,255) de l'image transparent
+		self.position_Select = self.Select_rezise.get_rect()
+		self.position_Select = self.position_Select.move(0,25)
+	
+	def selecteurActif(self):
+		self.imageSelect = pygame.image.load("Image/selecteuractif.png")
+		self.Select_rezise=pygame.transform.scale(self.imageSelect,(200,200))
+		self.Select_rezise.set_colorkey((255,255,255)) #Rend le blanc (valeur RGB : 255,255,255) de l'image transparent
+		self.position_Select = self.Select_rezise.get_rect()
+	
+	def selecteurpassif(self):
+		self.imageSelect = pygame.image.load("Image/selecteur.png")
+		self.Select_rezise=pygame.transform.scale(self.imageSelect,(200,200))
+		self.Select_rezise.set_colorkey((255,255,255)) #Rend le blanc (valeur RGB : 255,255,255) de l'image transparent
+		self.position_Select = self.Select_rezise.get_rect()
+	
+	#Déplacements
+	def right(self):
+		self.position_Select = self.position_Select.move(deplacement,0)
+	def left(self):
+		self.position_Select = self.position_Select.move(-deplacement,0)
+	def up(self):
+		self.position_Select = self.position_Select.move(0,-deplacement)
+	def down(self):
+		self.position_Select = self.position_Select.move(0,deplacement)
+	
+
 
 
 tablier=Tablier()
+selecteur=Selecteur()
 
 #Création carrés
 listecarres=[]
@@ -215,25 +248,34 @@ Pion.start(listePion)
 while loop: #Boucle d'événements
 
 	#Jeu
+	
 	for i in range(8):
 		fenetre.blit(listecarres[i].carre_rezise,listecarres[i].position_carre)
 	for i in range(6):
 		fenetre.blit(listePion[i].Pion_rezise,listePion[i].position_Pion)
 	
+	
 
 
-	#Afficher fênetre
-	pygame.display.flip()
+
 	#Fermer fênetre
 	for event in pygame.event.get(): #parcours de la liste des événements
+	
+		if (event.type==pygame.KEYDOWN and event.key==pygame.K_s):
+			selecteur.down()
+		if (event.type==pygame.KEYDOWN and event.key==pygame.K_z):
+			selecteur.up()
+		if (event.type==pygame.KEYDOWN and event.key==pygame.K_q):
+			selecteur.left()
+		if (event.type==pygame.KEYDOWN and event.key==pygame.K_d):
+			selecteur.right()
 
-		if (event.type==pygame.KEYDOWN and event.key==pygame.K_ESCAPE):
-			print("Espace !")
-
-		if magicNumber == 30:
-			loop=False
 		if magicNumber != 30:
 			magicNumber=0
+
 		if(event.type==pygame.QUIT or (event.type==pygame.KEYDOWN and event.key==pygame.K_ESCAPE)): #interrompt la boucle si nécessaire
 			loop = False
+	#Afficher fênetre
+	fenetre.blit(selecteur.Select_rezise,selecteur.position_Select)
+	pygame.display.flip()
 pygame.quit()
