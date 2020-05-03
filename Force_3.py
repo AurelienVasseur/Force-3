@@ -207,9 +207,9 @@ class Selecteur:
 	def right(self):
 		self.position_Select = self.position_Select.move(deplacement,0)
 	def left(self):
-		self.position_Select = self.position_Select.move(-deplacement,0)
+		self.position_Select = self.position_Select.move(-250,0)
 	def up(self):
-		self.position_Select = self.position_Select.move(0,-deplacement)
+		self.position_Select = self.position_Select.move(0,-250)
 	def down(self):
 		self.position_Select = self.position_Select.move(0,deplacement)
 	
@@ -246,7 +246,8 @@ Carres.start(listecarres)
 Pion.start(listePion)
 
 while loop: #Boucle d'événements
-
+	fenetre.blit(fond, (0,0))
+	fenetre.blit(grid,(0,0))
 	#Jeu
 	
 	for i in range(8):
@@ -263,13 +264,12 @@ while loop: #Boucle d'événements
 	
 		if (event.type==pygame.KEYDOWN and event.key==pygame.K_s):
 			selecteur.down()
-		if (event.type==pygame.KEYDOWN and event.key==pygame.K_z):
+		if (event.type==pygame.KEYDOWN and event.key==pygame.K_w):
 			selecteur.up()
-		if (event.type==pygame.KEYDOWN and event.key==pygame.K_q):
+		if (event.type==pygame.KEYDOWN and event.key==pygame.K_a):
 			selecteur.left()
 		if (event.type==pygame.KEYDOWN and event.key==pygame.K_d):
 			selecteur.right()
-
 		if magicNumber != 30:
 			magicNumber=0
 
