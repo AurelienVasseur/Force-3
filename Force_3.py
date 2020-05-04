@@ -6,7 +6,7 @@ from pygame.locals import *
 import math
 import os
 
-os.chdir("C:/Users/zerat/Onedrive/Documents/UTBm/S2/IA41/Force-3")
+
 #             ----- Force 3 -----
 
 #Initialisation des modules de pygame
@@ -66,6 +66,7 @@ class Pion:
 		self.numero=10
 		self.color=0
 
+	@staticmethod
 	def start(liste6Pion):
 		for i in range(6):   # Mise en place des carrées ainsi que de leurs positions respectives
 			liste6Pion[i].position_Pion = liste6Pion[i].position_Pion.move(positions_pion_init[i])
@@ -124,6 +125,7 @@ class Carres:
 		self.position_carre = self.carre_rezise.get_rect()
 		self.coord=[0,0]
 	
+	@staticmethod
 	def start(liste8carre):
 		h=0
 		k=0
