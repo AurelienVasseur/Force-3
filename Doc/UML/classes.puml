@@ -1,0 +1,87 @@
+@startuml classes
+
+class Tablier {
+    +pionsInit: Pion[3][2]
+    +grillePions: Pion[3][3]
+    +grilleCarres: Carre[3][3]
+    +selecteurMouvement: Selecteur
+    +selecteurPieceSelected: Selecteur
+    +coordonneesAffichageGraphique: CoordonneesAffichageGraphique
+    +deplacementPion(_mouvement: Mouvement, _pion: Pion)
+    +deplacementCarre(_mouvement: Mouvement, _carre: Carre)
+    +verifPossibiliteDeplacementPion(_mouvement: Mouvement, _pion: Pion)
+    +verifPossibiliteDeplacementCarre(_mouvement: Mouvement, _carre: Carre)
+}
+
+class Joueur {
+    +couleur: Couleur
+}
+
+abstract class Piece {
+    +position: integer[]
+    +positionImage
+    +image
+    +imageResize
+}
+
+class Pion {
+    +couleur: Couleur
+    +numero: integer
+}
+
+class Carre {
+
+}
+
+class Selecteur {
+    +position: integer[2]
+    +inPawn: boolean
+    +actif: boolean
+    +limite: integer[4]
+    +deplacement
+    +coordonneesAffichageGraphique: CoordonneesAffichageGraphique
+    +deplacement(_mouvement: Mouvement)
+}
+
+class GameManager {
+    +tablier: Tablier
+    +joueur_1: Joueur
+    +joueur_2: Joueur
+
+}
+
+enum Couleur {
+    BLACK
+    WHITE
+}
+hide Couleur methods
+
+enum Mouvement {
+    UP
+    DOWN
+    RIGHT
+    LEFT
+}
+hide Mouvement methods
+
+enum CoordonneesAffichageGraphique {
+    positionsAffichagePionsInit: integer[3][2]
+    positionsAffichagePions: integer[3][3]
+    positionsAffichageCarres: integer[3][3]
+}
+hide CoordonneesAffichageGraphique methods
+
+
+GameManager *-- Tablier
+GameManager *-- Joueur
+Tablier *-- Selecteur
+Tablier *-- Pion
+Tablier *-- Carre
+Tablier *-- CoordonneesAffichageGraphique
+Selecteur *-- CoordonneesAffichageGraphique
+Pion --|> Piece
+Carre --|> Piece
+Joueur *-- Couleur
+Pion *-- Couleur
+
+@enduml
