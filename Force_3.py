@@ -13,7 +13,6 @@ import os
 #Initialisation des modules de pygame
 pygame.init()
 
-
 #Variables
 couleur=0
 grillePion = np.zeros([3,3])

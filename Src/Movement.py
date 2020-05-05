@@ -1,6 +1,6 @@
 import enum
 
-class Mouvement(enum.Enum):
+class Movement(enum.Enum):
     UP = "UP"
     DOWN = "DOWN"
     RIGHT = "RIGHT"

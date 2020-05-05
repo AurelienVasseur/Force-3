@@ -1,88 +1,87 @@
 @startuml classes
 
-class Tablier {
-    +pionsInit: Pion[3][2]
-    +grillePions: Pion[3][3]
-    +grilleCarres: Carre[3][3]
-    +grilleCarresLast: Carre[3][3]
-    +selecteurMouvement: Selecteur
-    +selecteurPieceSelected: Selecteur
-    +coordonneesAffichageGraphique: CoordonneesAffichageGraphique
-    +deplacementPion(_mouvement: Mouvement, _pion: Pion)
-    +deplacementCarre(_mouvement: Mouvement, _carre: Carre)
-    +verifPossibiliteDeplacementPion(_mouvement: Mouvement, _pion: Pion)
-    +verifPossibiliteDeplacementCarre(_mouvement: Mouvement, _carre: Carre)
+class GameBoard {
+    +pawnsInit: Pawn[3][2]
+    +gridPawns: Pawn[3][3]
+    +gridSquare: Square[3][3]
+    +gridLastSquare: Square[3][3]
+    +selectorMovement: Selector
+    +selectorPieceSelected: Selector
+    +coordinatesPrintGraphic: CoordinatesPrintGraphic
+    +movementPawn(_movement: Movement, _pawn: Pawn)
+    +movementSquare(_movement: Movement, _square: Square)
+    +checkPossibilitiesMovementPawn(_movement: Movement, _pawn: Pawn)
+    +checkPossibilitiesMovementPawn(_movement: Movement, _square: Square)
 }
 
-class Joueur {
-    +couleur: Couleur
+class Player {
+    +color: Color
 }
 
-abstract class Piece {
+class Piece {
     +position: integer[]
     +positionImage
     +image
     +imageResize
 }
 
-class Pion {
-    +couleur: Couleur
-    +numero: integer
+class Pawn {
+    +color: Coler
+    +number: integer
 }
 
-class Carre {
+class Square {
 
 }
 
-class Selecteur {
+class Selector {
     +position: integer[2]
     +inPawn: boolean
-    +actif: boolean
-    +limite: integer[4]
-    +deplacement
-    +coordonneesAffichageGraphique: CoordonneesAffichageGraphique
-    +deplacement(_mouvement: Mouvement)
+    +active: boolean
+    +limit: integer[4]
+    +coordinatesPrintGraphic: CoordinatesPrintGraphic
+    +movement(_movement: Movement)
 }
 
 class GameManager {
-    +tablier: Tablier
-    +joueur_1: Joueur
-    +joueur_2: Joueur
+    +gameBoard: GameBoard
+    +player_1: Player
+    +player_2: Player
 
 }
 
-enum Couleur {
+enum Color {
     BLACK
     WHITE
 }
-hide Couleur methods
+hide Color methods
 
-enum Mouvement {
+enum Movement {
     UP
     DOWN
     RIGHT
     LEFT
 }
-hide Mouvement methods
+hide Movement methods
 
-enum CoordonneesAffichageGraphique {
-    positionsAffichagePionsInit: integer[3][2]
-    positionsAffichagePions: integer[3][3]
-    positionsAffichageCarres: integer[3][3]
+class CoordinatesPrintGraphic {
+    +step: integer
+    +positionsPrintPawnInit: integer[3][2]
+    +positionsPrintPawn: integer[3][3]
+    +positionsPrintSquare: integer[3][3]
 }
-hide CoordonneesAffichageGraphique methods
 
 
-GameManager *-- Tablier
-GameManager *-- Joueur
-Tablier *-- Selecteur
-Tablier *-- Pion
-Tablier *-- Carre
-Tablier *-- CoordonneesAffichageGraphique
-Selecteur *-- CoordonneesAffichageGraphique
-Pion --|> Piece
-Carre --|> Piece
-Joueur *-- Couleur
-Pion *-- Couleur
+GameManager *-- GameBoard
+GameManager *-- Player
+GameBoard *-- Selector
+GameBoard *-- Pawn
+GameBoard *-- Square
+GameBoard *-- CoordinatesPrintGraphic
+Selector *-- CoordinatesPrintGraphic
+Pawn --|> Piece
+Square --|> Piece
+Player *-- Color
+Pawn *-- Color
 
 @enduml
