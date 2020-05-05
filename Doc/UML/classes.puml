@@ -4,6 +4,7 @@ class Tablier {
     +pionsInit: Pion[3][2]
     +grillePions: Pion[3][3]
     +grilleCarres: Carre[3][3]
+    +grilleCarresLast: Carre[3][3]
     +selecteurMouvement: Selecteur
     +selecteurPieceSelected: Selecteur
     +coordonneesAffichageGraphique: CoordonneesAffichageGraphique

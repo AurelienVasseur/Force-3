@@ -1,0 +1,2 @@
+class Carre:
+    None
