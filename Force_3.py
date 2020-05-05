@@ -284,9 +284,9 @@ while loop: #Boucle d'événements
 	
 		if (event.type==pygame.KEYDOWN and event.key==pygame.K_s):
 			selecteur.down()
-		if (event.type==pygame.KEYDOWN and event.key==pygame.K_w):
+		if (event.type==pygame.KEYDOWN and event.key==pygame.K_z):
 			selecteur.up()
-		if (event.type==pygame.KEYDOWN and event.key==pygame.K_a):
+		if (event.type==pygame.KEYDOWN and event.key==pygame.K_q):
 			selecteur.left()
 		if (event.type==pygame.KEYDOWN and event.key==pygame.K_d):
 			selecteur.right()
@@ -295,11 +295,7 @@ while loop: #Boucle d'événements
 
 		if(event.type==pygame.QUIT or (event.type==pygame.KEYDOWN and event.key==pygame.K_ESCAPE)): #interrompt la boucle si nécessaire
 			loop = False
-<<<<<<< HEAD
-pygame.quit()
-=======
 	#Afficher fênetre
 	fenetre.blit(selecteur.Select_rezise,selecteur.position_Select)
 	pygame.display.flip()
 pygame.quit()
->>>>>>> f6eb7b71c5a1a7f9937b27c39236e4e5aa9d3e2c
