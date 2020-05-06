@@ -16,7 +16,8 @@ class GameBoard {
     +movementPawnFromPawnInitToGridPawn(_pawn: Pawn, _newPosition: Tuples)
     +checkPossibilitiesMovementPawn(_movement: Movement, _pawn: Pawn): boolean
     +checkPossibilitiesMovementSquare(_movement: Movement, _square: Square): boolean
-
+    +checkPossibilitiesPositionPawn(_position: integer[2]): boolean
+    +checkPossibilitiesPositionSquare(_position: integer[2]): boolean
 }
 
 class Player {

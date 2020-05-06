@@ -1,5 +1,7 @@
 from CoordinatesPrintGraphic import CoordinatesPrintGraphic
 from Image import Image
+import pygame
+from Movement import Movement
 
 class Selector:
     def __init__(self,_limit,_image,_coordinatesPrintGraphic):

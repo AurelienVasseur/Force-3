@@ -1,4 +1,5 @@
 from Image import Image
+import pygame
 
 class Piece:
     def __init__(self,_image):

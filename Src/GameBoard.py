@@ -12,8 +12,8 @@ class GameBoard:
         self.gridPawn = np.zeros([3,3])
         self.gridSquare = np.zeros([3,3])
         self.gridLastSquare = np.zeros([3,3])
-        self.selectorMovement = Selector()
-        self.selectorPieceSelected = Selector()
+        self.selectorMovement = Selector()       # A MODIFIER -> IL FAUT L'INITIALISER
+        self.selectorPieceSelected = Selector()  # A MODIFIER -> IL FAUT L'INITIALISER
         #White pawns
         for i in range(3):
             self.pawnsInit[i,0] = Pawn(Color.WHITE)
@@ -37,9 +37,10 @@ class GameBoard:
     def movementPawnFromPawnInitToGridPawn(self,_pawn,_newPosition):
         x = _pawn.position[0]
         y = _pawn.position[1]
-        if checkPossibilitiesMovementPawn(_movement,_pawn):
-                self.pawnsInit[x,y] = 0 #Update last position on grid
-                self.gridPawn[_newPosition[0],_newPosition[1]] = _pawn  #Update new position on grid            
+        if checkPossibilitiesPositionPawn(_newPosition):  
+            self.pawnsInit[x,y] = 0 #Update last position on grid
+            _pawn.position = [_newPosition[0],_newPosition[1]]  #Update pawn's position
+            self.gridPawn[_newPosition[0],_newPosition[1]] = _pawn  #Update new position on grid            
 
 
     def movementPawn(self,_movement,_pawn):
@@ -128,77 +129,71 @@ class GameBoard:
 
 
     def checkPossibilitiesMovementPawn(self,_movement,_pawn):
+        newX = None
+        newY = None
+
         if _movement == Movement.RIGHT:
             newX = _pawn.position[0]+1
             newY = _pawn.position[1]
-            if newX < 3 and self.gridPawn[newX,newY] == 0:
-                return True
-            else:
-                return False
 
-        if _movement == Movement.LEFT:
+        elif _movement == Movement.LEFT:
             newX = _pawn.position[0]-1
             newY = _pawn.position[1]
-            if newX >= 0 and self.gridPawn[newX,newY] == 0:
-                return True
-            else:
-                return False
 
-        if _movement == Movement.UP:
+        elif _movement == Movement.UP:
             newX = _pawn.position[0]
             newY = _pawn.position[1]-1
-            if newY >= 0 and self.gridPawn[newX,newY] == 0:
-                return True
-            else:
-                return False
 
-        if _movement == Movement.DOWN:
+        elif _movement == Movement.DOWN:
             newX = _pawn.position[0]
             newY = _pawn.position[1]+1
-            if newY < 3 and self.gridPawn[newX,newY] == 0:
-                return True
-            else:
-                return False        
+
+        else:
+            return False
+
+        return checkPossibilitiesPositionPawn([newX,newY])    
 
     def checkPossibilitiesMovementSquare(self,_movement,_square):
+        newX = None
+        newY = None
+
         if _movement == Movement.RIGHT:
             newX = _square.position[0]+1
             newY = _square.position[1]
-            if newX < 3 and self.gridSquare[newX,newY] == 0:
-                return True
-            else:
-                return False
 
-        if _movement == Movement.LEFT:
+        elif _movement == Movement.LEFT:
             newX = _square.position[0]-1
             newY = _square.position[1]
-            if newX >= 0 and self.gridSquare[newX,newY] == 0:
-                return True
-            else:
-                return False
 
-        if _movement == Movement.UP:
+        elif _movement == Movement.UP:
             newX = _square.position[0]
             newY = _square.position[1]-1
-            if newY >= 0 and self.gridSquare[newX,newY] == 0:
-                return True
-            else:
-                return False
 
-        if _movement == Movement.DOWN:
+        elif _movement == Movement.DOWN:
             newX = _square.position[0]
             newY = _square.position[1]+1
-            if newY < 3 and self.gridSquare[newX,newY] == 0:
-                return True
-            else:
-                return False  
+
+        else:
+            return False
+
+        return checkPossibilitiesPositionSquare([newX,newY]) 
     
-    def checkEmptyPositionPawn(self,_position):
+
+    def checkPossibilitiesPositionPawn(self,_position):
         x=_position[0]
         y=_position[1]
-        if 0<=x<3 and 0<=y<3 :
+        if 0<=x<3 and 0<=y<3 and self.gridPawn[x,y] == 0:
+            return True
+        else:
+            return False
 
-        if  :
+    def checkPossibilitiesPositionSquare(self,_position):
+        x=_position[0]
+        y=_position[1]
+        if 0<=x<3 and 0<=y<3 and self.gridSquare[x,y] == 0:
+            return True
+        else:
+            return False
 
 
 
