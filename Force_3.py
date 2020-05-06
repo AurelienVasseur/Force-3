@@ -6,11 +6,15 @@ from pygame.locals import *
 import math
 import os
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 06174a9ff300bb2c0019115aa528209505a42763
 #             ----- Force 3 -----
 
 #Initialisation des modules de pygame
 pygame.init()
-
 
 #Variables
 couleur=0

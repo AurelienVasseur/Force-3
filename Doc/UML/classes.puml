@@ -1,0 +1,87 @@
+@startuml classes
+
+class GameBoard {
+    +pawnsInit: Pawn[3][2]
+    +gridPawns: Pawn[3][3]
+    +gridSquare: Square[3][3]
+    +gridLastSquare: Square[3][3]
+    +selectorMovement: Selector
+    +selectorPieceSelected: Selector
+    +coordinatesPrintGraphic: CoordinatesPrintGraphic
+    +movementPawn(_movement: Movement, _pawn: Pawn)
+    +movementSquare(_movement: Movement, _square: Square)
+    +checkPossibilitiesMovementPawn(_movement: Movement, _pawn: Pawn)
+    +checkPossibilitiesMovementPawn(_movement: Movement, _square: Square)
+}
+
+class Player {
+    +color: Color
+}
+
+class Piece {
+    +position: integer[]
+    +positionImage
+    +image
+    +imageResize
+}
+
+class Pawn {
+    +color: Coler
+    +number: integer
+}
+
+class Square {
+
+}
+
+class Selector {
+    +position: integer[2]
+    +inPawn: boolean
+    +active: boolean
+    +limit: integer[4]
+    +coordinatesPrintGraphic: CoordinatesPrintGraphic
+    +movement(_movement: Movement)
+}
+
+class GameManager {
+    +gameBoard: GameBoard
+    +player_1: Player
+    +player_2: Player
+
+}
+
+enum Color {
+    BLACK
+    WHITE
+}
+hide Color methods
+
+enum Movement {
+    UP
+    DOWN
+    RIGHT
+    LEFT
+}
+hide Movement methods
+
+class CoordinatesPrintGraphic {
+    +step: integer
+    +positionsPrintPawnInit: integer[3][2]
+    +positionsPrintPawn: integer[3][3]
+    +positionsPrintSquare: integer[3][3]
+}
+
+
+GameManager *-- GameBoard
+GameManager *-- Player
+GameBoard *-- Selector
+GameBoard *-- Pawn
+GameBoard *-- Square
+GameBoard *-- CoordinatesPrintGraphic
+Selector *-- CoordinatesPrintGraphic
+Pawn --|> Piece
+Square --|> Piece
+Player *-- Color
+Pawn *-- Color
+
+@enduml
