@@ -10,12 +10,15 @@ class GameBoard:
     def __init__(self):
         ### self.pawnsInit = np.zeros([3,2]) #marche pas pour ligne 20, car on peut pas mettre un Pawn au lieu d'un entier
         self.pawnsInit = [[Pawn(None) for i in range(2)] for y in range(3)] #Il faut initialiser le tableau de type Pawn (Rows et cols inversés!)
-        self.gridPawn = np.zeros([3,3])#initialiser que avec des None
-        #self.gridSquare = np.zeros([3,3])
+        self.gridPawn = [3,3] #initialiser que avec des None
         self.gridSquare = [[Square() for i in range(3)] for y in range(3)] #Il faut initialiser le tableau de type Square
-        self.gridLastSquare = np.zeros([3,3])
+        self.gridLastSquare = np.zeros([3,3]) # faire juste coordonnées et vérifier
+
+        
         #self.selectorMovement = Selector()       # A MODIFIER -> IL FAUT L'INITIALISER
         #self.selectorPieceSelected = Selector()  # A MODIFIER -> IL FAUT L'INITIALISER
+
+
         #White pawns
         for i in range(3):
             np.array(self.pawnsInit)[i,0] = Pawn(Color.WHITE) #Il faut utiliser np.array sinon erreur
@@ -31,7 +34,7 @@ class GameBoard:
         y = _pawn.position[1]
         if checkPossibilitiesPositionPawn(_newPosition):  
             # il faudrait plutot pop le pawn en question
-            self.pawnsInit[x,y] = 0 #Update last position on grid
+            np.array(self.pawnsInit)[x,y] = None #Update last position on grid
 
             _pawn.position = [_newPosition[0],_newPosition[1]]  #Update pawn's position
             self.gridPawn[_newPosition[0],_newPosition[1]] = _pawn  #Update new position on grid            
