@@ -12,8 +12,8 @@ class GameBoard:
         self.gridPawn = np.zeros([3,3])
         self.gridSquare = np.zeros([3,3])
         self.gridLastSquare = np.zeros([3,3])
-        self.selectorMovement = Selector()       # A MODIFIER -> IL FAUT L'INITIALISER
-        self.selectorPieceSelected = Selector()  # A MODIFIER -> IL FAUT L'INITIALISER
+        #self.selectorMovement = Selector()       # A MODIFIER -> IL FAUT L'INITIALISER
+        #self.selectorPieceSelected = Selector()  # A MODIFIER -> IL FAUT L'INITIALISER
         #White pawns
         for i in range(3):
             self.pawnsInit[i,0] = Pawn(Color.WHITE)
@@ -32,6 +32,7 @@ class GameBoard:
             else:
                 self.gridSquare[2,2] = Square()
             x+=1 
+
 
 
     def movementPawnFromPawnInitToGridPawn(self,_pawn,_newPosition):
