@@ -8,18 +8,19 @@ import numpy as np
 
 class GameBoard:
     def __init__(self):
-        self.pawnsInit = np.zeros([3,2])
+        ### self.pawnsInit = np.zeros([3,2]) #marche pas pour ligne 20, car on peut pas mettre un Pawn au lieu d'un entier
+        self.pawnsInit = [[Pawn(None) for i in range(2)] for y in range(3)] #Il faut initialiser le tableau de type Pawn (Rows et cols inversés!)
         self.gridPawn = np.zeros([3,3])
-        self.gridSquare = np.zeros([3,3])
+        self.gridSquare = [[Square() for i in range(3)] for y in range(3)] #Il faut initialiser le tableau de type Square
         self.gridLastSquare = np.zeros([3,3])
         #self.selectorMovement = Selector()       # A MODIFIER -> IL FAUT L'INITIALISER
         #self.selectorPieceSelected = Selector()  # A MODIFIER -> IL FAUT L'INITIALISER
         #White pawns
         for i in range(3):
-            self.pawnsInit[i,0] = Pawn(Color.WHITE)
+            np.array(self.pawnsInit)[i,0] = Pawn(Color.WHITE) #Il faut utiliser np.array sinon erreur
         #Black pawns init
         for i in range(3):
-            self.pawnsInit[i,1] = Pawn(Color.BLACK)
+            np.array(self.pawnsInit)[i,1] = Pawn(Color.BLACK)
         #Squares init
         x=0
         y=0
@@ -28,12 +29,11 @@ class GameBoard:
                 x=0
                 y+=1
             if x!=1 or y!=1:
-                self.gridSquare[x,y] = Square()
+                np.array(self.gridSquare)[x,y] = Square()
             else:
-                self.gridSquare[2,2] = Square()
+                np.array(self.gridSquare)[2,2] = Square()
             x+=1 
-
-
+        
 
     def movementPawnFromPawnInitToGridPawn(self,_pawn,_newPosition):
         x = _pawn.position[0]
