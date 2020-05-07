@@ -6,3 +6,9 @@ class GameManager:
         self.GameBoard=GameBoard()
         self.player_1=Player()
         self.player_2=Player()
+
+def main():
+    game = GameManager()
+
+if __name__ == "__main__":
+    main()

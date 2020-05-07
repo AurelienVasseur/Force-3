@@ -394,13 +394,13 @@ while loop: #Boucle d'événements
 			data=selecteur.posPion_select
 			selecteur2.selectionINITPion(player)
 			selecteur2.posPion_select=data
-			if (event.type==pygame.KEYDOWN and event.key==pygame.K_KP_ENTER):
+			if (event.type==pygame.KEYDOWN and (event.key==pygame.K_KP_ENTER or event.key==pygame.K_RETURN)): # K_RETURN pour touche entrée
 
 				selecteur2.selecteurActif()
 				selecteur.selectionCarre(player)
 
 		if selecteur2.Actif == True and selecteur.Actif == False :
-			if (event.type==pygame.KEYDOWN and event.key==pygame.K_KP_ENTER):
+			if (event.type==pygame.KEYDOWN and (event.key==pygame.K_KP_ENTER or  event.key==pygame.K_RETURN)):
 				for pion in listePion:
 					if pion.posIni == selecteur2.posPion_select and pion.color == Tour:
 						i=selecteur.coord[0]
