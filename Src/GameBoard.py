@@ -52,8 +52,8 @@ class GameBoard:
                 _pawn.position = [x+1, y]
                 self.gridPawn[x, y] = 0  # Update last position on grid
                 self.gridPawn[x+1, y] = _pawn  # Update new position on grid
-                _pawn.positionImage[0] = CoordinatesPrintGraphic.POSITION_PRINT_PAWN.value[x+1][y][0]
-                _pawn.positionImage[1] = CoordinatesPrintGraphic.POSITION_PRINT_PAWN.value[x+1][y][1]
+                _pawn.positionImage[0] = CoordinatesPrintGraphic.POSITION_PRINT_PAWN[x+1][y][0]
+                _pawn.positionImage[1] = CoordinatesPrintGraphic.POSITION_PRINT_PAWN[x+1][y][1]
 
         if _movement == Movement.LEFT:
             x = _pawn.position[0]
@@ -62,8 +62,8 @@ class GameBoard:
                 _pawn.position = [x-1, y]
                 self.gridPawn[x, y] = 0  # Update last position on grid
                 self.gridPawn[x-1, y] = _pawn  # Update new position on grid
-                _pawn.positionImage[0] = CoordinatesPrintGraphic.POSITION_PRINT_PAWN.value[x-1][y][0]
-                _pawn.positionImage[1] = CoordinatesPrintGraphic.POSITION_PRINT_PAWN.value[x-1][y][1]
+                _pawn.positionImage[0] = CoordinatesPrintGraphic.POSITION_PRINT_PAWN[x-1][y][0]
+                _pawn.positionImage[1] = CoordinatesPrintGraphic.POSITION_PRINT_PAWN[x-1][y][1]
 
         if _movement == Movement.UP:
             x = _pawn.position[0]
@@ -72,8 +72,8 @@ class GameBoard:
                 _pawn.position = [x, y-1]
                 self.gridPawn[x, y] = 0  # Update last position on grid
                 self.gridPawn[x, y-1] = _pawn  # Update new position on grid
-                _pawn.positionImage[0] = CoordinatesPrintGraphic.POSITION_PRINT_PAWN.value[x][y-1][0]
-                _pawn.positionImage[1] = CoordinatesPrintGraphic.POSITION_PRINT_PAWN.value[x][y-1][1]
+                _pawn.positionImage[0] = CoordinatesPrintGraphic.POSITION_PRINT_PAWN[x][y-1][0]
+                _pawn.positionImage[1] = CoordinatesPrintGraphic.POSITION_PRINT_PAWN[x][y-1][1]
 
         if _movement == Movement.DOWN:
             x = _pawn.position[0]
@@ -82,8 +82,8 @@ class GameBoard:
                 _pawn.position = [x, y+1]
                 self.gridPawn[x, y] = 0  # Update last position on grid
                 self.gridPawn[x, y+1] = _pawn  # Update new position on grid
-                _pawn.positionImage[0] = CoordinatesPrintGraphic.POSITION_PRINT_PAWN.value[x][y+1][0]
-                _pawn.positionImage[1] = CoordinatesPrintGraphic.POSITION_PRINT_PAWN.value[x][y+1][1]
+                _pawn.positionImage[0] = CoordinatesPrintGraphic.POSITION_PRINT_PAWN[x][y+1][0]
+                _pawn.positionImage[1] = CoordinatesPrintGraphic.POSITION_PRINT_PAWN[x][y+1][1]
     def movementSquare(self, _movement, _square):
         if _movement == Movement.RIGHT:
             x = _square.position[0]
@@ -93,8 +93,8 @@ class GameBoard:
                 self.gridSquare[x, y] = 0  # Update last position on grid
                 # Update new position on grid
                 self.gridSquare[x+1, y] = _square
-                _square.positionImage[0] = CoordinatesPrintGraphic.POSITION_PRINT_SQUARE.value[x+1][y][0]
-                _square.positionImage[1] = CoordinatesPrintGraphic.POSITION_PRINT_SQUARE.value[x+1][y][1]
+                _square.positionImage[0] = CoordinatesPrintGraphic.POSITION_PRINT_SQUARE[x+1][y][0]
+                _square.positionImage[1] = CoordinatesPrintGraphic.POSITION_PRINT_SQUARE[x+1][y][1]
 
         if _movement == Movement.LEFT:
             x = _square.position[0]
@@ -104,8 +104,8 @@ class GameBoard:
                 self.gridSquare[x, y] = 0  # Update last position on grid
                 # Update new position on grid
                 self.gridSquare[x-1, y] = _square
-                _square.positionImage[0] = CoordinatesPrintGraphic.POSITION_PRINT_SQUARE.value[x-1][y][0]
-                _square.positionImage[1] = CoordinatesPrintGraphic.POSITION_PRINT_SQUARE.value[x-1][y][1]
+                _square.positionImage[0] = CoordinatesPrintGraphic.POSITION_PRINT_SQUARE[x-1][y][0]
+                _square.positionImage[1] = CoordinatesPrintGraphic.POSITION_PRINT_SQUARE[x-1][y][1]
 
         if _movement == Movement.UP:
             x = _square.position[0]
@@ -115,8 +115,8 @@ class GameBoard:
                 self.gridSquare[x, y] = 0  # Update last position on grid
                 # Update new position on grid
                 self.gridSquare[x, y-1] = _square
-                _square.positionImage[0] = CoordinatesPrintGraphic.POSITION_PRINT_SQUARE.value[x][y-1][0]
-                _square.positionImage[1] = CoordinatesPrintGraphic.POSITION_PRINT_SQUARE.value[x][y-1][1]
+                _square.positionImage[0] = CoordinatesPrintGraphic.POSITION_PRINT_SQUARE[x][y-1][0]
+                _square.positionImage[1] = CoordinatesPrintGraphic.POSITION_PRINT_SQUARE[x][y-1][1]
 
         if _movement == Movement.DOWN:
             x = _square.position[0]
@@ -126,8 +126,8 @@ class GameBoard:
                 self.gridSquare[x, y] = 0  # Update last position on grid
                 # Update new position on grid
                 self.gridSquare[x, y+1] = _square
-                _square.positionImage[0] = CoordinatesPrintGraphic.POSITION_PRINT_SQUARE.value[x][y+1][0]
-                _square.positionImage[1] = CoordinatesPrintGraphic.POSITION_PRINT_SQUARE.value[x][y+1][1]
+                _square.positionImage[0] = CoordinatesPrintGraphic.POSITION_PRINT_SQUARE[x][y+1][0]
+                _square.positionImage[1] = CoordinatesPrintGraphic.POSITION_PRINT_SQUARE[x][y+1][1]
     def checkPossibilitiesMovementPawn(self, _movement, _pawn):
         newX = None
         newY = None
