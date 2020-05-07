@@ -362,6 +362,7 @@ while loop: #Boucle d'événements
 	fenetre.blit(grid,(0,0))
 	#Jeu
 	
+
 	for i in range(8):
 		fenetre.blit(listecarres[i].carre_rezise,listecarres[i].position_carre)
 	for i in range(6):

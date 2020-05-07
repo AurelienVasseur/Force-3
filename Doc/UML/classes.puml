@@ -5,32 +5,42 @@ class GameBoard {
     +gridPawns: Pawn[3][3]
     +gridSquare: Square[3][3]
     +gridLastSquare: Square[3][3]
-    +selectorMovement: Selector
-    +selectorPieceSelected: Selector
+    +selectorMovementSquare: Selector
+    +selectorMovementPawn: Selector   
+    +selectorPieceSelectedSquare: Selector
+    +selectorPieceSelectedPawn: Selector
     +coordinatesPrintGraphic: CoordinatesPrintGraphic
+    +__init__()
     +movementPawn(_movement: Movement, _pawn: Pawn)
     +movementSquare(_movement: Movement, _square: Square)
-    +checkPossibilitiesMovementPawn(_movement: Movement, _pawn: Pawn)
-    +checkPossibilitiesMovementPawn(_movement: Movement, _square: Square)
+    +movementPawnFromPawnInitToGridPawn(_pawn: Pawn, _newPosition: Tuples)
+    +checkPossibilitiesMovementPawn(_movement: Movement, _pawn: Pawn): boolean
+    +checkPossibilitiesMovementSquare(_movement: Movement, _square: Square): boolean
+    +checkPossibilitiesPositionPawn(_position: integer[2]): boolean
+    +checkPossibilitiesPositionSquare(_position: integer[2]): boolean
 }
 
 class Player {
     +color: Color
+    +__init__()
 }
 
 class Piece {
     +position: integer[]
-    +positionImage
-    +image
-    +imageResize
+    +image: module pygame
+    +imageRezise: module pygame
+    +positionImage: module pygame
+    +__init__()
 }
 
 class Pawn {
     +color: Coler
     +number: integer
+    +__init__(_color: Color)
 }
 
 class Square {
+    +__init__()
 
 }
 
@@ -39,14 +49,20 @@ class Selector {
     +inPawn: boolean
     +active: boolean
     +limit: integer[4]
+    +image: module pygame
+    +imageRezise: module pygame
+    +positionImage: module pygame
     +coordinatesPrintGraphic: CoordinatesPrintGraphic
-    +movement(_movement: Movement)
+    +__init__(_limit: integer[4], _image: Image, _coordinatePrintGraphic: CoordinatePrintGraphic)
+    +movementSelector(_movement: Movement)
+    +checkPossibilitiesMovementSelector(_movement: Movement): boolean
 }
 
 class GameManager {
     +gameBoard: GameBoard
     +player_1: Player
     +player_2: Player
+    +__init__()
 
 }
 
@@ -56,6 +72,19 @@ enum Color {
 }
 hide Color methods
 
+enum Image {
+    SQUARE
+    PAWN_BLACK
+    PAWN_WHITE
+    SELECTOR_SQUARE_ACTIVE
+    SELECTOR_SQUARE_PASSIVE
+    SELECTOR_PAWN_ACTIVE
+    SELECTOR_PAWN_PASSIVE
+    GRID
+    BACKGROUND
+}
+hide Image methods
+
 enum Movement {
     UP
     DOWN
@@ -64,13 +93,13 @@ enum Movement {
 }
 hide Movement methods
 
-class CoordinatesPrintGraphic {
-    +step: integer
-    +positionsPrintPawnInit: integer[3][2]
-    +positionsPrintPawn: integer[3][3]
-    +positionsPrintSquare: integer[3][3]
+enum CoordinatesPrintGraphic {
+    STEP: integer
+    POSITION_PRINT_PAWN_INIT: integer[3][2]
+    POSITION_PRINT_PAWN: integer[3][3]
+    POSITION_PRINT_SQUARE: integer[3][3]
 }
-
+hide CoordinatesPrintGraphic methods
 
 GameManager *-- GameBoard
 GameManager *-- Player
