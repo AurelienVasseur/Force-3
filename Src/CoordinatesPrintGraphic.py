@@ -4,7 +4,7 @@ import numpy as np
 class CoordinatesPrintGraphic(enum.Enum):
     STEP = 215
     #Position pawn init
-    POSITION_PRINT_PAWN_INIT = np.any([ # Il faut utiliser 'any' au lieu de array sinon c'est ambigu
+    POSITION_PRINT_PAWN_INIT = np.any([ # Il faut utiliser 'any' au lieu de array sinon ça veut pas marcher
             [(750,50),(750,50+STEP),(750,50+2*STEP)], #Column 1 (and not line!)
             [(850,50),(850,50+STEP),(850,50+2*STEP)]]) #Column 2
     #Position pawn
