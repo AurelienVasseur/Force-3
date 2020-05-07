@@ -75,6 +75,13 @@ class GameBoard:
             #Position de la case dans la matrice
             x = _positionArray[0]
             y = _positionArray[1]
+
+            #on vérifie si un pion se trouve sur la case
+            pawnPresent = False
+            if(self.gridPawn[x, y].Color != None):
+                pawnPresent = True
+
+            #on vérifie les types de mouvements    
             if _movement == Movement.RIGHT:
                 #Si la case de droite est vide, alors on inverse les deux cases
                 if self.checkPossibilitiesMovementSquare(_movement, _square, _positionArray):
@@ -82,10 +89,14 @@ class GameBoard:
                     self.gridSquare[x+1, y] = self.gridSquare[x, y]
                     self.gridSquare[x, y].empty = squareTemp
                     #Enregistrement des valeurs pour le tour suivant
-                    self.gridLastSquare[0] = x
+                    self.gridLastSquare[0] = x+1
                     self.gridLastSquare[1] = y
                     _square.positionImage[0] = CoordinatesPrintGraphic.POSITION_PRINT_SQUARE.value[x+1][y][0]
                     _square.positionImage[1] = CoordinatesPrintGraphic.POSITION_PRINT_SQUARE.value[x+1][y][1]
+                    #on déplace le pion si il y en a un
+                    if pawnPresent:
+                        self.gridPawn[x+1, y] = self.gridPawn[x, y]
+                        self.gridPawn[x, y] = Pawn(None)
 
             elif _movement == Movement.LEFT:
                 if self.checkPossibilitiesMovementSquare(_movement, _square, _positionArray):
@@ -93,10 +104,14 @@ class GameBoard:
                     self.gridSquare[x-1, y] = self.gridSquare[x, y]
                     self.gridSquare[x, y].empty = squareTemp
                     #Enregistrement des valeurs pour le tour suivant
-                    self.gridLastSquare[0] = x
+                    self.gridLastSquare[0] = x-1
                     self.gridLastSquare[1] = y
                     _square.positionImage[0] = CoordinatesPrintGraphic.POSITION_PRINT_SQUARE.value[x-1][y][0]
                     _square.positionImage[1] = CoordinatesPrintGraphic.POSITION_PRINT_SQUARE.value[x-1][y][1]
+                    #on déplace le pion si il y en a un
+                    if pawnPresent:
+                        self.gridPawn[x-1, y] = self.gridPawn[x, y]
+                        self.gridPawn[x, y] = Pawn(None)
 
             elif _movement == Movement.UP:
                 if self.checkPossibilitiesMovementSquare(_movement, _square, _positionArray):
@@ -105,9 +120,13 @@ class GameBoard:
                     self.gridSquare[x, y].empty = squareTemp
                     #Enregistrement des valeurs pour le tour suivant
                     self.gridLastSquare[0] = x
-                    self.gridLastSquare[1] = y
+                    self.gridLastSquare[1] = y-1
                     _square.positionImage[0] = CoordinatesPrintGraphic.POSITION_PRINT_SQUARE.value[x][y-1][0]
                     _square.positionImage[1] = CoordinatesPrintGraphic.POSITION_PRINT_SQUARE.value[x][y-1][1]
+                    #on déplace le pion si il y en a un
+                    if pawnPresent:
+                        self.gridPawn[x, y-1] = self.gridPawn[x, y]
+                        self.gridPawn[x, y] = Pawn(None)
 
             elif _movement == Movement.DOWN:
                 if self.checkPossibilitiesMovementSquare(_movement, _square, _positionArray):
@@ -116,16 +135,20 @@ class GameBoard:
                     self.gridSquare[x, y].empty = squareTemp
                     #Enregistrement des valeurs pour le tour suivant
                     self.gridLastSquare[0] = x
-                    self.gridLastSquare[1] = y
+                    self.gridLastSquare[1] = y+1
                     _square.positionImage[0] = CoordinatesPrintGraphic.POSITION_PRINT_SQUARE.value[x][y+1][0]
                     _square.positionImage[1] = CoordinatesPrintGraphic.POSITION_PRINT_SQUARE.value[x][y+1][1]
+                    #on déplace le pion si il y en a un
+                    if pawnPresent:
+                        self.gridPawn[x, y+1] = self.gridPawn[x, y]
+                        self.gridPawn[x, y] = Pawn(None)
     
     #_position correspond à la possible position destination du pion
     def checkPossibilitiesMovementPawn(self, _position):
             x = _position[0]
             y = _position[1]
-            #On verifie si la case destination est occupée par un pion
-            if (self.gridPawn[x, y].Color == None):
+            #On verifie si la case destination est occupée par un pion et qu'une case s'y trouve
+            if (self.gridPawn[x, y].Color == None and self.gridSquare[x, y].empty == False):
                 return True
             return False
 
