@@ -11,5 +11,5 @@ class Piece:
         #self.positionImage =self.image.Rezise.get_rect()
 
         #Solution
-        self.imageRezise = pygame.transform.scale(self.image,_image.value[1]) 
-        self.positionImage =self.imageRezise.get_rect()
+        self.imageResize = pygame.transform.scale(self.image,_image.value[1]) 
+        self.positionImage =self.imageResize.get_rect()
