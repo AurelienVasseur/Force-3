@@ -1,8 +1,12 @@
-from Piece import Piece
-from Image import Image
+from Cell import Cell
+from Position import Position
+
+class Square(Cell):
+
+    def __init__(self, position = None):
+        super(Square, self).__init__(position, type(self).__name__)
+
+    def __str__(self):
+        return super(Square, self).__str__()
 
 
-class Square(Piece):
-    def __init__(self, _empty):
-        Piece.__init__(self, Image.SQUARE)
-        self.empty = _empty

@@ -1,13 +1,13 @@
-from Piece import Piece
-from Image import Image
+from Cell import Cell
+from Position import Position
 from Color import Color
 
+class Pawn(Cell):
 
-class Pawn(Piece):
-    def __init__(self, _color):
-        if _color == Color.BLACK:
-            Piece.__init__(self, Image.PAWN_BLACK)
-        else:
-            Piece.__init__(self, Image.PAWN_WHITE)
-        self.Color = _color
-        self.number = 10
+    def __init__(self, position: Position, color: Color):
+        super(Pawn, self).__init__(position, type(self).__name__)
+        self.color = color
+
+    def __str__(self):
+        return "{ " + "position: {}".format(str(self.position)) + ", type: {}".format(self.type) + ", color: {}".format(self.color) + " }"
+
