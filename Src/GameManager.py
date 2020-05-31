@@ -5,13 +5,18 @@ from Player import Player
 from Window import Window
 from Color import Color
 from Direction import Direction
+from StatusType import StatusType
+from copy import deepcopy
 
 class GameManager:
-    def __init__(self, gameBoard = GameBoard()):
-        self.gameBoard = gameBoard
+    def __init__(self, gameBoard = GameBoard(), players = None):
+        self.gameBoard = GameBoard(gameBoard)
         self.players = [None for i in range(2)]
-        self.players[Color.BLACK.value] = Player(Color.BLACK)
-        self.players[Color.WHITE.value] = Player(Color.WHITE)
+        if(players is None):
+            self.players[Color.BLACK.value] = Player(Color.BLACK)
+            self.players[Color.WHITE.value] = Player(Color.WHITE)
+        else:
+            self.players = deepcopy(players)
 
 
     def getActivePlayer(self):
@@ -28,26 +33,11 @@ class GameManager:
             self.players[Color.WHITE.value].isTurnActive = False
 
     def checkVictory(self):
-        # line victory check
-        for i in range(len(self.gameBoard.grid)):
-            line = self.gameBoard.grid[i]
-            if(line[0].type == "Pawn" and line[1].type == "Pawn" and line[2].type == "Pawn" and line[0].color == line[1].color and line[1].color == line[2].color):
-                print("{} player won with line pawns alignment".format("BLACK" if line[0].color == Color.BLACK else "WHITE"))
-                return True
-        # column victory check
-        grid = self.gameBoard.grid
-        for i in range(len(self.gameBoard.grid)):
-            if(grid[0][i].type == "Pawn" and grid[1][i].type == "Pawn" and grid[2][i].type == "Pawn" and grid[0][i].color == grid[1][i].color and grid[1][i].color == grid[2][i].color):
-                print("{} player won with column pawns alignment".format("BLACK" if grid[0][i].color == Color.BLACK else "WHITE"))
-                return True
-        # diagonal victory check
-        if(grid[0][0].type == "Pawn" and grid[1][1].type == "Pawn" and grid[2][2].type == "Pawn" and grid[0][0].color == grid[1][1].color and grid[1][1].color == grid[2][2].color):
-            print("{} player won with diagonal pawns alignment".format("BLACK" if grid[0][0].color == Color.BLACK else "WHITE"))
-            return True
-        if(grid[0][2].type == "Pawn" and grid[1][1].type == "Pawn" and grid[2][0].type == "Pawn" and grid[0][2].color == grid[1][1].color and grid[1][1].color == grid[2][0].color):
-            print("{} player won with reverse diagonal pawns alignment".format("BLACK" if grid[0][2].color == Color.BLACK else "WHITE"))
-            return True
-        return False
+        gameStatus = self.gameBoard.getGameStatus()
+        if(gameStatus.status != StatusType.END):
+            return False
+        print("{} wins by {} pawns alignment.".format(gameStatus.winner, gameStatus.winType))
+        return True
 
     def start(self):
         random.seed()
