@@ -42,11 +42,11 @@ class GameManager:
                 return True
         # diagonal victory check
         if(grid[0][0].type == "Pawn" and grid[1][1].type == "Pawn" and grid[2][2].type == "Pawn" and grid[0][0].color == grid[1][1].color and grid[1][1].color == grid[2][2].color):
-                print("{} player won with diagonal pawns alignment".format("BLACK" if grid[0][0].color == Color.BLACK else "WHITE"))
-                return True
+            print("{} player won with diagonal pawns alignment".format("BLACK" if grid[0][0].color == Color.BLACK else "WHITE"))
+            return True
         if(grid[0][2].type == "Pawn" and grid[1][1].type == "Pawn" and grid[2][0].type == "Pawn" and grid[0][2].color == grid[1][1].color and grid[1][1].color == grid[2][0].color):
-                print("{} player won with reverse diagonal pawns alignment".format("BLACK" if grid[0][2].color == Color.BLACK else "WHITE"))
-                return True
+            print("{} player won with reverse diagonal pawns alignment".format("BLACK" if grid[0][2].color == Color.BLACK else "WHITE"))
+            return True
         return False
 
     def start(self):
@@ -58,12 +58,12 @@ class GameManager:
             self.players[Color.WHITE.value].isTurnActive = True
         
         # display grid in console
-        '''
+        """ 
         for i in range(len(self.gameBoard.grid)):
             for j in range(len(self.gameBoard.grid[i])):
                 print("{},".format(str(self.gameBoard.grid[i][j])), end="")
             print()
-        '''
+        """
         
         pygame.init()
         window = pygame.display.set_mode((Window.WIDTH.value, Window.HEIGHT.value), pygame.RESIZABLE)

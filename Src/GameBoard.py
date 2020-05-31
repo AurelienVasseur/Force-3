@@ -17,3 +17,5 @@ class GameBoard:
         for j in range(3):
             self.pawns[0][j] = Pawn(None, Color.BLACK)
             self.pawns[1][j] = Pawn(None, Color.WHITE)
+
+        self.previousActionWasDoubleSlide = False

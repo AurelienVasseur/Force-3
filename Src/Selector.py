@@ -51,16 +51,22 @@ class Selector:
                         if(self.position.y > self.activeCell.position.y):
                             # move to right
                             if(self.position.y - self.activeCell.position.y > 1):
-                                # move 2 to right
-                                activeCellOriginalPosition = Position(self.activeCell.position.x, self.activeCell.position.y)
-                                gameBoard.grid[self.position.x][self.position.y] = gameBoard.grid[activeCellOriginalPosition.x][activeCellOriginalPosition.y + 1]
-                                gameBoard.grid[self.position.x][self.position.y].position = Position(self.position.x, self.position.y)
-                                gameBoard.grid[activeCellOriginalPosition.x][activeCellOriginalPosition.y + 1] = gameBoard.grid[activeCellOriginalPosition.x][activeCellOriginalPosition.y]
-                                gameBoard.grid[activeCellOriginalPosition.x][activeCellOriginalPosition.y + 1].position = Position(activeCellOriginalPosition.x, activeCellOriginalPosition.y + 1)
-                                gameBoard.grid[activeCellOriginalPosition.x][activeCellOriginalPosition.y] = Cell(Position(activeCellOriginalPosition.x, activeCellOriginalPosition.y))
-                                self.isActive = False
-                                self.activeCell = None
-                                return True
+                                if(not gameBoard.previousActionWasDoubleSlide):
+                                    # move 2 to right
+                                    activeCellOriginalPosition = Position(self.activeCell.position.x, self.activeCell.position.y)
+                                    gameBoard.grid[self.position.x][self.position.y] = gameBoard.grid[activeCellOriginalPosition.x][activeCellOriginalPosition.y + 1]
+                                    gameBoard.grid[self.position.x][self.position.y].position = Position(self.position.x, self.position.y)
+                                    gameBoard.grid[activeCellOriginalPosition.x][activeCellOriginalPosition.y + 1] = gameBoard.grid[activeCellOriginalPosition.x][activeCellOriginalPosition.y]
+                                    gameBoard.grid[activeCellOriginalPosition.x][activeCellOriginalPosition.y + 1].position = Position(activeCellOriginalPosition.x, activeCellOriginalPosition.y + 1)
+                                    gameBoard.grid[activeCellOriginalPosition.x][activeCellOriginalPosition.y] = Cell(Position(activeCellOriginalPosition.x, activeCellOriginalPosition.y))
+                                    self.isActive = False
+                                    self.activeCell = None
+                                    gameBoard.previousActionWasDoubleSlide = True
+                                    return True
+                                else:
+                                    # cancel try to double move for 2nd time
+                                    self.isActive = False
+                                    self.activeCell = None
                             else:
                                 # move 1 to right
                                 activeCellOriginalPosition = Position(self.activeCell.position.x, self.activeCell.position.y)
@@ -69,20 +75,27 @@ class Selector:
                                 gameBoard.grid[activeCellOriginalPosition.x][activeCellOriginalPosition.y] = Cell(Position(activeCellOriginalPosition.x, activeCellOriginalPosition.y))
                                 self.isActive = False
                                 self.activeCell = None
+                                gameBoard.previousActionWasDoubleSlide = False
                                 return True
                         else:
                             # move to left
                             if(self.activeCell.position.y - self.position.y > 1):
-                                # move 2 to left
-                                activeCellOriginalPosition = Position(self.activeCell.position.x, self.activeCell.position.y)
-                                gameBoard.grid[self.position.x][self.position.y] = gameBoard.grid[activeCellOriginalPosition.x][activeCellOriginalPosition.y - 1]
-                                gameBoard.grid[self.position.x][self.position.y].position = Position(self.position.x, self.position.y)
-                                gameBoard.grid[activeCellOriginalPosition.x][activeCellOriginalPosition.y - 1] = gameBoard.grid[activeCellOriginalPosition.x][activeCellOriginalPosition.y]
-                                gameBoard.grid[activeCellOriginalPosition.x][activeCellOriginalPosition.y - 1].position = Position(activeCellOriginalPosition.x, activeCellOriginalPosition.y - 1)
-                                gameBoard.grid[activeCellOriginalPosition.x][activeCellOriginalPosition.y] = Cell(Position(activeCellOriginalPosition.x, activeCellOriginalPosition.y))
-                                self.isActive = False
-                                self.activeCell = None
-                                return True
+                                if(not gameBoard.previousActionWasDoubleSlide):
+                                    # move 2 to left
+                                    activeCellOriginalPosition = Position(self.activeCell.position.x, self.activeCell.position.y)
+                                    gameBoard.grid[self.position.x][self.position.y] = gameBoard.grid[activeCellOriginalPosition.x][activeCellOriginalPosition.y - 1]
+                                    gameBoard.grid[self.position.x][self.position.y].position = Position(self.position.x, self.position.y)
+                                    gameBoard.grid[activeCellOriginalPosition.x][activeCellOriginalPosition.y - 1] = gameBoard.grid[activeCellOriginalPosition.x][activeCellOriginalPosition.y]
+                                    gameBoard.grid[activeCellOriginalPosition.x][activeCellOriginalPosition.y - 1].position = Position(activeCellOriginalPosition.x, activeCellOriginalPosition.y - 1)
+                                    gameBoard.grid[activeCellOriginalPosition.x][activeCellOriginalPosition.y] = Cell(Position(activeCellOriginalPosition.x, activeCellOriginalPosition.y))
+                                    self.isActive = False
+                                    self.activeCell = None
+                                    gameBoard.previousActionWasDoubleSlide = True
+                                    return True
+                                else:
+                                    # cancel try to double move for 2nd time
+                                    self.isActive = False
+                                    self.activeCell = None
                             else:
                                 # move 1 to left
                                 activeCellOriginalPosition = Position(self.activeCell.position.x, self.activeCell.position.y)
@@ -91,22 +104,29 @@ class Selector:
                                 gameBoard.grid[activeCellOriginalPosition.x][activeCellOriginalPosition.y] = Cell(Position(activeCellOriginalPosition.x, activeCellOriginalPosition.y))
                                 self.isActive = False
                                 self.activeCell = None
+                                gameBoard.previousActionWasDoubleSlide = False
                                 return True
                     elif(self.position.y == self.activeCell.position.y):
                         # move cells on same column to current Cell
                         if(self.position.x > self.activeCell.position.x):
                             # move down
                             if(self.position.x - self.activeCell.position.x > 1):
-                                # move 2 down
-                                activeCellOriginalPosition = Position(self.activeCell.position.x, self.activeCell.position.y)
-                                gameBoard.grid[self.position.x][self.position.y] = gameBoard.grid[activeCellOriginalPosition.x + 1][activeCellOriginalPosition.y]
-                                gameBoard.grid[self.position.x][self.position.y].position = Position(self.position.x, self.position.y)
-                                gameBoard.grid[activeCellOriginalPosition.x + 1][activeCellOriginalPosition.y] = gameBoard.grid[activeCellOriginalPosition.x][activeCellOriginalPosition.y]
-                                gameBoard.grid[activeCellOriginalPosition.x + 1][activeCellOriginalPosition.y].position = Position(activeCellOriginalPosition.x + 1, activeCellOriginalPosition.y)
-                                gameBoard.grid[activeCellOriginalPosition.x][activeCellOriginalPosition.y] = Cell(Position(activeCellOriginalPosition.x, activeCellOriginalPosition.y))
-                                self.isActive = False
-                                self.activeCell = None
-                                return True
+                                if(not gameBoard.previousActionWasDoubleSlide):
+                                    # move 2 down
+                                    activeCellOriginalPosition = Position(self.activeCell.position.x, self.activeCell.position.y)
+                                    gameBoard.grid[self.position.x][self.position.y] = gameBoard.grid[activeCellOriginalPosition.x + 1][activeCellOriginalPosition.y]
+                                    gameBoard.grid[self.position.x][self.position.y].position = Position(self.position.x, self.position.y)
+                                    gameBoard.grid[activeCellOriginalPosition.x + 1][activeCellOriginalPosition.y] = gameBoard.grid[activeCellOriginalPosition.x][activeCellOriginalPosition.y]
+                                    gameBoard.grid[activeCellOriginalPosition.x + 1][activeCellOriginalPosition.y].position = Position(activeCellOriginalPosition.x + 1, activeCellOriginalPosition.y)
+                                    gameBoard.grid[activeCellOriginalPosition.x][activeCellOriginalPosition.y] = Cell(Position(activeCellOriginalPosition.x, activeCellOriginalPosition.y))
+                                    self.isActive = False
+                                    self.activeCell = None
+                                    gameBoard.previousActionWasDoubleSlide = True
+                                    return True
+                                else:
+                                    # cancel try to double move for 2nd time
+                                    self.isActive = False
+                                    self.activeCell = None
                             else:
                                 # move 1 down
                                 activeCellOriginalPosition = Position(self.activeCell.position.x, self.activeCell.position.y)
@@ -115,20 +135,27 @@ class Selector:
                                 gameBoard.grid[activeCellOriginalPosition.x][activeCellOriginalPosition.y] = Cell(Position(activeCellOriginalPosition.x, activeCellOriginalPosition.y))
                                 self.isActive = False
                                 self.activeCell = None
+                                gameBoard.previousActionWasDoubleSlide = False
                                 return True
                         else:
                             # move up
                             if(self.activeCell.position.x - self.position.x > 1):
+                                if(not gameBoard.previousActionWasDoubleSlide):
                                 # move 2 up
-                                activeCellOriginalPosition = Position(self.activeCell.position.x, self.activeCell.position.y)
-                                gameBoard.grid[self.position.x][self.position.y] = gameBoard.grid[activeCellOriginalPosition.x - 1][activeCellOriginalPosition.y]
-                                gameBoard.grid[self.position.x][self.position.y].position = Position(self.position.x, self.position.y)
-                                gameBoard.grid[activeCellOriginalPosition.x - 1][activeCellOriginalPosition.y] = gameBoard.grid[activeCellOriginalPosition.x][activeCellOriginalPosition.y]
-                                gameBoard.grid[activeCellOriginalPosition.x - 1][activeCellOriginalPosition.y].position = Position(activeCellOriginalPosition.x - 1, activeCellOriginalPosition.y)
-                                gameBoard.grid[activeCellOriginalPosition.x][activeCellOriginalPosition.y] = Cell(Position(activeCellOriginalPosition.x, activeCellOriginalPosition.y))
-                                self.isActive = False
-                                self.activeCell = None
-                                return True
+                                    activeCellOriginalPosition = Position(self.activeCell.position.x, self.activeCell.position.y)
+                                    gameBoard.grid[self.position.x][self.position.y] = gameBoard.grid[activeCellOriginalPosition.x - 1][activeCellOriginalPosition.y]
+                                    gameBoard.grid[self.position.x][self.position.y].position = Position(self.position.x, self.position.y)
+                                    gameBoard.grid[activeCellOriginalPosition.x - 1][activeCellOriginalPosition.y] = gameBoard.grid[activeCellOriginalPosition.x][activeCellOriginalPosition.y]
+                                    gameBoard.grid[activeCellOriginalPosition.x - 1][activeCellOriginalPosition.y].position = Position(activeCellOriginalPosition.x - 1, activeCellOriginalPosition.y)
+                                    gameBoard.grid[activeCellOriginalPosition.x][activeCellOriginalPosition.y] = Cell(Position(activeCellOriginalPosition.x, activeCellOriginalPosition.y))
+                                    self.isActive = False
+                                    self.activeCell = None
+                                    gameBoard.previousActionWasDoubleSlide = True
+                                    return True
+                                else:
+                                    # cancel try to double move for 2nd time
+                                    self.isActive = False
+                                    self.activeCell = None
                             else:
                                 # move 1 up
                                 activeCellOriginalPosition = Position(self.activeCell.position.x, self.activeCell.position.y)
@@ -137,6 +164,7 @@ class Selector:
                                 gameBoard.grid[activeCellOriginalPosition.x][activeCellOriginalPosition.y] = Cell(Position(activeCellOriginalPosition.x, activeCellOriginalPosition.y))
                                 self.isActive = False
                                 self.activeCell = None
+                                gameBoard.previousActionWasDoubleSlide = False
                                 return True
                     else:
                         # cancel after trying to move squares on grid
@@ -151,6 +179,7 @@ class Selector:
                             gameBoard.grid[self.position.x][self.position.y] = self.activeCell
                             self.isActive = False
                             self.activeCell = None
+                            gameBoard.previousActionWasDoubleSlide = False
                             return True
                         else:
                             # put used pawn on free square
@@ -159,6 +188,7 @@ class Selector:
                             gameBoard.grid[self.position.x][self.position.y] = self.activeCell
                             self.isActive = False
                             self.activeCell = None
+                            gameBoard.previousActionWasDoubleSlide = False
                             return True
                     else:
                         # cancel try to put owned pawn on cell already containing a pawn
