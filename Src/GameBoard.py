@@ -47,7 +47,12 @@ class GameBoard:
                     if(cell.type == "Square"):
                         if(playerPawn.position is None):
                             # it is possible to place unused pawn on free square
-                            possibleMoves.append(Move(playerPawn.position, cell.position, MoveType.PUT_UNUSED_PAWN_ON_SQUARE))
+                            yIndex = -1
+                            playerIndex = activePlayer.color.value
+                            for i in range(len(self.pawns[playerIndex])):
+                                if(self.pawns[playerIndex][i].position == None):
+                                    yIndex = i
+                            possibleMoves.append(Move(Position(playerIndex, yIndex), cell.position, MoveType.PUT_UNUSED_PAWN_ON_SQUARE))
                         if(playerPawn.position is not None):
                             # it is possible to place used pawn on free
                             possibleMoves.append(Move(playerPawn.position, cell.position, MoveType.PUT_USED_PAWN_ON_SQUARE))
@@ -179,7 +184,40 @@ class GameBoard:
             self.grid[move.start.x][move.start.y] = Cell(Position(move.start.x, move.start.y))
         
         
+        
+
+    
+    def getPlayerScore(self, player):
+        winScoreConstant = 3
+        nbAlignesLine = 0
+        nbAlignesColumn = 0
+        score = 0
         for i in range(len(self.grid)):
             for j in range(len(self.grid[i])):
-                print("{},".format(str(self.grid[i][j])), end="")
-            print()
+                if(self.grid[i][j].type == "Pawn" and self.grid[i][j].color == player.color):
+                    nbAlignesLine += 1
+                if(self.grid[j][i].type == "Pawn" and self.grid[j][i].color == player.color):
+                    nbAlignesColumn += 1
+            if(nbAlignesLine == 2):
+                score += nbAlignesLine
+            elif(nbAlignesLine == 3):
+                score += nbAlignesLine * winScoreConstant
+            if(nbAlignesColumn == 2):
+                score += nbAlignesColumn
+            elif(nbAlignesColumn == 3):
+                score += nbAlignesColumn * winScoreConstant
+        if(self.grid[0][0].type == "Pawn" and self.grid[1][1].type == "Pawn" and self.grid[0][0].color == player.color and self.grid[1][1].color == player.color):
+            if(self.grid[2][2].type == "Pawn" and self.grid[2][2].color == player.color):
+                score = 3 * winScoreConstant
+            else:
+                score += 2
+        
+        if(self.grid[0][2].type == "Pawn" and self.grid[1][1].type == "Pawn" and self.grid[0][2].color == player.color and self.grid[1][1].color == player.color):
+            if(self.grid[2][0].type == "Pawn" and self.grid[2][0].color == player.color):
+                score = 3 * winScoreConstant
+            else:
+                score += 2
+        
+        if(player.color == Color.BLACK):
+            return score
+        return -score

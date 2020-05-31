@@ -1,10 +1,11 @@
 from Player import Player
 from Color import Color
 from GameBoard import GameBoard
+import sys
 
 class ArtificialIntelligence(Player):
 
-    def __init__(self, color: Color, isTurnActive = False, selector = None, deepness = 5):
+    def __init__(self, color: Color, isTurnActive = False, selector = None, deepness = 2):
         super(ArtificialIntelligence, self).__init__(color, isTurnActive, selector)
         self.deepness = deepness
 
@@ -16,13 +17,30 @@ class ArtificialIntelligence(Player):
             return gameBoard.getPlayerScore(self.activePlayer(players))
         
         maximizingPlayer = self.activePlayer(players).color == Color.BLACK
+        infinity = sys.maxsize
 
         if(maximizingPlayer):
             # maximizing
-            ...
+            maxEval = -infinity
+            for possibleMove in gameBoard.getPossibleMoves(self.activePlayer(players)):
+                eval = self.minimax(self.simulateMove(gameBoard, possibleMove), depth - 1, alpha, beta, self.switchActivePlayer(players))
+                maxEval = max(maxEval, eval)
+                alpha = max(alpha, eval)
+                if (beta <= alpha):
+                    break
+            return maxEval
         else:
             # minimizing
-            ...
+            minEval = infinity
+            for possibleMove in gameBoard.getPossibleMoves(self.activePlayer(players)):
+                eval = self.minimax(self.simulateMove(gameBoard, possibleMove), depth - 1, alpha, beta, self.switchActivePlayer(players))
+                # print("minEval = {} , eval = {}".format(minEval, eval))
+                minEval = min(minEval, eval)
+                
+                beta = min(beta, eval)
+                if (beta <= alpha):
+                    break
+            return minEval
     
 
     def activePlayer(self, players):
@@ -50,4 +68,38 @@ class ArtificialIntelligence(Player):
     def simulateMove(self, gameBoard, move):
         newGameBoard = GameBoard(gameBoard)
         newGameBoard.move(move)
-        ...
+        return newGameBoard
+
+
+    
+    def playBestMove(self, gameBoard, players):
+        infinity = sys.maxsize
+        alpha = -infinity
+        beta = infinity
+        if(self.activePlayer(players).color != self.color):
+            players = self.switchActivePlayer(players)
+        
+        values = []
+        possibleMoves = gameBoard.getPossibleMoves(self.activePlayer(players))
+        for possibleMove in possibleMoves:
+            values.append(self.minimax(self.simulateMove(gameBoard, possibleMove), self.deepness, alpha, beta, players))
+
+        if(self.color == Color.BLACK):
+            # search max value
+            bestMoveIndex = -1
+            maxValue = -infinity
+            for i in range(len(values)):
+                if(values[i] > maxValue):
+                    maxValue = values[i]
+                    bestMoveIndex = i
+            gameBoard.move(possibleMoves[bestMoveIndex])
+        else:
+            # search min value
+            bestMoveIndex = -1
+            minValue = infinity
+            for i in range(len(values)):
+                if(values[i] < minValue):
+                    minValue = values[i]
+                    bestMoveIndex = i
+            gameBoard.move(possibleMoves[bestMoveIndex])
+

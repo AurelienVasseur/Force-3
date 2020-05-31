@@ -1,5 +1,4 @@
 import pygame
-import random
 from GameBoard import GameBoard
 from Player import Player
 from Window import Window
@@ -7,16 +6,24 @@ from Color import Color
 from Direction import Direction
 from StatusType import StatusType
 from copy import deepcopy
+from GameType import GameType
+from ArtificialIntelligence import ArtificialIntelligence
 
 class GameManager:
-    def __init__(self, gameBoard = GameBoard(), players = None):
-        self.gameBoard = GameBoard(gameBoard)
+    def __init__(self, gameType = GameType.PLAYER_VS_PLAYER):
+        self.gameBoard = GameBoard()
         self.players = [None for i in range(2)]
-        if(players is None):
+        self.gameType = gameType
+        if(self.gameType == GameType.PLAYER_VS_PLAYER):
             self.players[Color.BLACK.value] = Player(Color.BLACK)
             self.players[Color.WHITE.value] = Player(Color.WHITE)
+        elif(self.gameType == GameType.PLAYER_VS_AI):
+            self.players[Color.BLACK.value] = Player(Color.BLACK)
+            self.players[Color.WHITE.value] = ArtificialIntelligence(Color.WHITE)
         else:
-            self.players = deepcopy(players)
+            self.players[Color.BLACK.value] = ArtificialIntelligence(Color.BLACK)
+            self.players[Color.WHITE.value] = ArtificialIntelligence(Color.WHITE)
+        self.players[Color.BLACK.value].isTurnActive = True
 
 
     def getActivePlayer(self):
@@ -39,14 +46,7 @@ class GameManager:
         print("{} wins by {} pawns alignment.".format(gameStatus.winner, gameStatus.winType))
         return True
 
-    def start(self):
-        random.seed()
-        # select starting player
-        if(random.random() < 0.5):
-            self.players[Color.BLACK.value].isTurnActive = True
-        else:
-            self.players[Color.WHITE.value].isTurnActive = True
-        
+    def start(self):        
         # display grid in console
         """ 
         for i in range(len(self.gameBoard.grid)):
@@ -96,20 +96,26 @@ class GameManager:
                 if(event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE)):
                     play = False
 
-                if(event.type == pygame.KEYDOWN):
-                    if(event.key == pygame.K_RETURN):
-                        actionComplete = self.getActivePlayer().selector.toggleSelect(self.gameBoard, self.getActivePlayer().color.value)
-                        if(actionComplete):
-                            self.switchActivePlayer()
-                            play = not self.checkVictory()
-                    if(event.key == pygame.K_UP or event.key == pygame.K_w):
-                        self.getActivePlayer().selector.move(Direction.UP)
-                    if(event.key == pygame.K_DOWN or event.key == pygame.K_s):
-                        self.getActivePlayer().selector.move(Direction.DOWN)
-                    if(event.key == pygame.K_LEFT or event.key == pygame.K_a):
-                        self.getActivePlayer().selector.move(Direction.LEFT)
-                    if(event.key == pygame.K_RIGHT or event.key == pygame.K_d):
-                        self.getActivePlayer().selector.move(Direction.RIGHT)
+                
+                if(self.gameType == GameType.PLAYER_VS_PLAYER or (self.gameType == GameType.PLAYER_VS_AI and self.getActivePlayer().color == Color.BLACK)):
+                    if(event.type == pygame.KEYDOWN):
+                        if(event.key == pygame.K_RETURN):
+                            actionComplete = self.getActivePlayer().selector.toggleSelect(self.gameBoard, self.getActivePlayer().color.value)
+                            if(actionComplete):
+                                self.switchActivePlayer()
+                                play = not self.checkVictory()
+                        if(event.key == pygame.K_UP or event.key == pygame.K_w):
+                            self.getActivePlayer().selector.move(Direction.UP)
+                        if(event.key == pygame.K_DOWN or event.key == pygame.K_s):
+                            self.getActivePlayer().selector.move(Direction.DOWN)
+                        if(event.key == pygame.K_LEFT or event.key == pygame.K_a):
+                            self.getActivePlayer().selector.move(Direction.LEFT)
+                        if(event.key == pygame.K_RIGHT or event.key == pygame.K_d):
+                            self.getActivePlayer().selector.move(Direction.RIGHT)
+                else:
+                    self.getActivePlayer().playBestMove(self.gameBoard, self.players)
+                    self.switchActivePlayer()
+                    play = not self.checkVictory()
 
 
             for i in range(len(self.gameBoard.grid)):
@@ -175,4 +181,4 @@ class GameManager:
 
 
 
-GameManager().start()
+GameManager(GameType.PLAYER_VS_AI).start()
