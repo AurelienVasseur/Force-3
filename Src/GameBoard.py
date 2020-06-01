@@ -189,41 +189,12 @@ class GameBoard:
     # EVALUATION METHOD
     def getPlayerScore(self, player):
         #return math.floor(random.random() * 100)
-        nbAlignesLineThis = 0
-        nbAlignesColumnThis = 0
-        nbAlignesLineOpponent = 0
-        nbAlignesColumnOpponent = 0
-        score = 0
-        for i in range(len(self.grid)):
-            for j in range(len(self.grid[i])):
-                if(self.grid[i][j].type == "Pawn"):
-                    if(self.grid[i][j].color == player.color):
-                        nbAlignesLineThis += 1
-                    else:
-                        nbAlignesLineOpponent += 1
-                if(self.grid[j][i].type == "Pawn"):
-                    if(self.grid[j][i].color == player.color):
-                        nbAlignesColumnThis += 1
-                    else:
-                        nbAlignesColumnOpponent += 1
-            if(nbAlignesLineThis == 3 or nbAlignesColumnThis == 3):
-                score = 100
-            elif(nbAlignesLineOpponent == 3 or nbAlignesColumnOpponent == 3):
-                score = -10
-        
-        
-        if(self.grid[0][0].type == "Pawn" and self.grid[1][1].type == "Pawn" and self.grid[2][2].type == "Pawn"):
-            if(self.grid[0][0].color == player.color and self.grid[1][1].color == player.color and self.grid[2][2].color == player.color):
-                score = 100
-            if(self.grid[0][0].color != player.color and self.grid[1][1].color != player.color and self.grid[2][2].color != player.color):
-                score = -10
-        
-        if(self.grid[0][2].type == "Pawn" and self.grid[1][1].type == "Pawn" and self.grid[2][0].type == "Pawn"):
-            if(self.grid[0][2].color == player.color and self.grid[1][1].color == player.color and self.grid[2][0].color == player.color):
-                score = 100
-            if(self.grid[0][2].color != player.color and self.grid[1][1].color != player.color and self.grid[2][0].color != player.color):
-                score = -10
-        
+        sign = -1
         if(player.color == Color.BLACK):
-            return score
-        return -score
+            sign = 1
+        gameStatus = self.getGameStatus()
+        if(gameStatus.status == StatusType.END):
+            if(gameStatus.winner == player.color):
+                return sign * 1
+            return sign * -1
+        return 0
