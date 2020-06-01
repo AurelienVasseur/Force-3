@@ -19,10 +19,12 @@ class ArtificialIntelligence(Player):
         maximizingPlayer = self.activePlayer(players).color == Color.BLACK
         infinity = sys.maxsize
 
+        possibleMoves = gameBoard.getPossibleMoves(self.activePlayer(players))
+
         if(maximizingPlayer):
             # maximizing
             maxEval = -infinity
-            for possibleMove in gameBoard.getPossibleMoves(self.activePlayer(players)):
+            for possibleMove in possibleMoves:
                 evaluation = self.minimax(self.simulateMove(gameBoard, possibleMove), depth - 1, alpha, beta, self.switchActivePlayer(players))
                 maxEval = max(maxEval, evaluation)
                 alpha = max(alpha, evaluation)
@@ -32,7 +34,7 @@ class ArtificialIntelligence(Player):
         else:
             # minimizing
             minEval = infinity
-            for possibleMove in gameBoard.getPossibleMoves(self.activePlayer(players)):
+            for possibleMove in possibleMoves:
                 evaluation = self.minimax(self.simulateMove(gameBoard, possibleMove), depth - 1, alpha, beta, self.switchActivePlayer(players))
                 minEval = min(minEval, evaluation)
                 beta = min(beta, evaluation)

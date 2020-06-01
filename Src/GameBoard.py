@@ -128,7 +128,7 @@ class GameBoard:
                             possibleMoves.append(Move(Position(1, 2), cell.position, MoveType.SIMPLE_SLIDE, Direction.LEFT))
                             possibleMoves.append(Move(Position(0, 1), cell.position, MoveType.SIMPLE_SLIDE, Direction.DOWN))
                             possibleMoves.append(Move(Position(2, 1), cell.position, MoveType.SIMPLE_SLIDE, Direction.UP))
-        
+        # print("nbPossibleMoves={}".format(len(possibleMoves)))
         return possibleMoves
 
     
