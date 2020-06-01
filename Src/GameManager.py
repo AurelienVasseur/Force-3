@@ -9,6 +9,7 @@ from GameType import GameType
 from ArtificialIntelligence import ArtificialIntelligence
 import time
 from View import View
+from Config import Config
 
 
 class GameManager:
@@ -21,10 +22,10 @@ class GameManager:
             self.players[Color.WHITE.value] = Player(Color.WHITE)
         elif(self.gameType == GameType.PLAYER_VS_AI):
             self.players[Color.BLACK.value] = Player(Color.BLACK)
-            self.players[Color.WHITE.value] = ArtificialIntelligence(Color.WHITE, 4)
+            self.players[Color.WHITE.value] = ArtificialIntelligence(Color.WHITE, False, None, Config.RESEARCH_DEPTH_PLAYER_VS_AI.value)
         else:
-            self.players[Color.BLACK.value] = ArtificialIntelligence(Color.BLACK, 1)
-            self.players[Color.WHITE.value] = ArtificialIntelligence(Color.WHITE, 1)
+            self.players[Color.BLACK.value] = ArtificialIntelligence(Color.BLACK, True, None, Config.RESEARCH_DEPTH_AI_VS_AI.value)
+            self.players[Color.WHITE.value] = ArtificialIntelligence(Color.WHITE, False, None, Config.RESEARCH_DEPTH_AI_VS_AI.value)
         self.players[Color.BLACK.value].isTurnActive = True
         self.view = None
 
@@ -73,7 +74,7 @@ class GameManager:
 
     def handleAI(self, currentTime, timeLastAIAction):
         if(self.gameType == GameType.AI_VS_AI or (self.gameType == GameType.PLAYER_VS_AI and self.getActivePlayer().color == Color.WHITE)):
-            if(currentTime - timeLastAIAction > 1):
+            if(currentTime - timeLastAIAction > Config.AI_PAUSE_TIME.value):
                 self.getActivePlayer().playBestMove(self.gameBoard, self.players)
                 self.switchActivePlayer()
                 timeLastAIAction = time.time()
