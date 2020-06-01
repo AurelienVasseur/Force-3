@@ -18,15 +18,14 @@ class GameManager:
         self.players = [None for i in range(2)]
         self.gameType = gameType
         if(self.gameType == GameType.PLAYER_VS_PLAYER):
-            self.players[Color.BLACK.value] = Player(Color.BLACK)
-            self.players[Color.WHITE.value] = Player(Color.WHITE)
+            self.players[Color.BLACK.value] = Player(Color.BLACK, True)
+            self.players[Color.WHITE.value] = Player(Color.WHITE, False)
         elif(self.gameType == GameType.PLAYER_VS_AI):
-            self.players[Color.BLACK.value] = Player(Color.BLACK)
-            self.players[Color.WHITE.value] = ArtificialIntelligence(Color.WHITE, False, None, Config.RESEARCH_DEPTH_PLAYER_VS_AI.value)
+            self.players[Color.BLACK.value] = Player(Color.BLACK, False)
+            self.players[Color.WHITE.value] = ArtificialIntelligence(Color.WHITE, True, None, Config.RESEARCH_DEPTH_PLAYER_VS_AI.value)
         else:
             self.players[Color.BLACK.value] = ArtificialIntelligence(Color.BLACK, True, None, Config.RESEARCH_DEPTH_AI_VS_AI.value)
             self.players[Color.WHITE.value] = ArtificialIntelligence(Color.WHITE, False, None, Config.RESEARCH_DEPTH_AI_VS_AI.value)
-        self.players[Color.BLACK.value].isTurnActive = True
         self.view = None
 
 
