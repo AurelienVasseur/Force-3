@@ -5,11 +5,11 @@ from Window import Window
 from Color import Color
 from Direction import Direction
 from StatusType import StatusType
-from copy import deepcopy
 from GameType import GameType
 from ArtificialIntelligence import ArtificialIntelligence
 import time
 from View import View
+
 
 class GameManager:
     def __init__(self, gameType = GameType.PLAYER_VS_PLAYER):
@@ -38,8 +38,9 @@ class GameManager:
             self.view.blitBackground()
             self.view.blitGrid()
 
-            timeLastAIAction = self.handleAI(time.time(), timeLastAIAction)
-            play = self.handleUserControls()
+            timeLastAIAction, play = self.handleAI(time.time(), timeLastAIAction)
+            if(play):
+                play = self.handleUserControls()
 
             self.updateGUI()
             self.view.display()
@@ -73,11 +74,12 @@ class GameManager:
     def handleAI(self, currentTime, timeLastAIAction):
         if(self.gameType == GameType.AI_VS_AI or (self.gameType == GameType.PLAYER_VS_AI and self.getActivePlayer().color == Color.WHITE)):
             if(currentTime - timeLastAIAction > 1):
-                    self.getActivePlayer().playBestMove(self.gameBoard, self.players)
-                    self.switchActivePlayer()
-                    play = not self.checkVictory()
-                    timeLastAIAction = time.time()
-        return timeLastAIAction
+                self.getActivePlayer().playBestMove(self.gameBoard, self.players)
+                self.switchActivePlayer()
+                timeLastAIAction = time.time()
+                if(self.checkVictory()):
+                    return timeLastAIAction, False
+        return timeLastAIAction, True
 
     def handleUserControls(self):
         for event in pygame.event.get():
@@ -141,6 +143,13 @@ class GameManager:
     
     
     def GuiUpdateSelectors(self):
+        if(self.gameType != GameType.AI_VS_AI):
+            self.GuiUpdateSelectorBlack()
+
+        if(self.gameType == GameType.PLAYER_VS_PLAYER):
+            self.GuiUpdateSelectorWhite()
+
+    def GuiUpdateSelectorBlack(self):
         selectorBlackPositionX = None
         selectorBlackPositionY = None
         if(self.players[0].selector.position.x != self.players[0].selector.maxLine):
@@ -154,7 +163,7 @@ class GameManager:
             self.view.blitSelectorBlackActive(selectorBlackPositionX, selectorBlackPositionY)
         else:
             self.view.blitSelectorBlack(selectorBlackPositionX, selectorBlackPositionY)
-
+    def GuiUpdateSelectorWhite(self):
         selectorWhitePositionX = None
         selectorWhitePositionY = None
         if(self.players[1].selector.position.x != self.players[1].selector.minLine):
@@ -167,5 +176,8 @@ class GameManager:
             self.view.blitSelectorWhiteActive(selectorWhitePositionX, selectorWhitePositionY)
         else:
             self.view.blitSelectorWhite(selectorWhitePositionX, selectorWhitePositionY)
+
+
+
 
 GameManager(GameType.PLAYER_VS_AI).start()
