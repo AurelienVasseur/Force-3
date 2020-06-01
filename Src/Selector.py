@@ -1,7 +1,5 @@
 from Position import Position
 from Direction import Direction
-from Square import Square
-from Cell import Cell
 from Move import Move
 from MoveType import MoveType
 
@@ -49,10 +47,12 @@ class Selector:
                     # print("Selected Square or owned Pawn in grid")
                     self.isActive = True
                     self.activeCell = gameBoard.grid[self.position.x][self.position.y]
+                    return False
             elif(gameBoard.pawns[playerIndex][self.position.y].position is None):
                 # print("Selected unused Pawn")
                 self.isActive = True
                 self.activeCell = gameBoard.pawns[playerIndex][self.position.y]
+                return False
         else:
             # print("Pressed Enter while active")
             if(self.isInGrid()):
@@ -73,6 +73,7 @@ class Selector:
                                     # cancel try to double move for 2nd time
                                     self.isActive = False
                                     self.activeCell = None
+                                    return False
                             else:
                                 # move 1 to right
                                 gameBoard.move(Move(self.activeCell.position, self.position, MoveType.SIMPLE_SLIDE, Direction.RIGHT))
@@ -94,6 +95,7 @@ class Selector:
                                     # cancel try to double move for 2nd time
                                     self.isActive = False
                                     self.activeCell = None
+                                    return False
                             else:
                                 # move 1 to left
                                 gameBoard.move(Move(self.activeCell.position, self.position, MoveType.SIMPLE_SLIDE, Direction.LEFT))
@@ -117,6 +119,7 @@ class Selector:
                                     # cancel try to double move for 2nd time
                                     self.isActive = False
                                     self.activeCell = None
+                                    return False
                             else:
                                 # move 1 down
                                 gameBoard.move(Move(self.activeCell.position, self.position, MoveType.SIMPLE_SLIDE, Direction.DOWN))
@@ -138,6 +141,7 @@ class Selector:
                                     # cancel try to double move for 2nd time
                                     self.isActive = False
                                     self.activeCell = None
+                                    return False
                             else:
                                 # move 1 up
                                 gameBoard.move(Move(self.activeCell.position, self.position, MoveType.SIMPLE_SLIDE, Direction.UP))
@@ -149,6 +153,7 @@ class Selector:
                         # cancel after trying to move squares on grid
                         self.isActive = False
                         self.activeCell = None
+                        return False
                 
                 elif(self.activeCell.type == "Pawn" and self.activeCell.color.value == playerIndex):
                     if(gameBoard.grid[self.position.x][self.position.y].type == "Square"):
@@ -174,15 +179,18 @@ class Selector:
                         # cancel try to put owned pawn on cell already containing a pawn
                         self.isActive = False
                         self.activeCell = None
+                        return False
                 else:
                     # cancel try to put enemy pawn somewhere on grid
                     self.isActive = False
                     self.activeCell = None
+                    return False
                     
             else:
                 # cancel selection when trying to put something outside grid
                 self.isActive = False
                 self.activeCell = None
+                return False
         return False
 
     

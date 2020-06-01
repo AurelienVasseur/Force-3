@@ -5,7 +5,7 @@ import sys
 
 class ArtificialIntelligence(Player):
 
-    def __init__(self, color: Color, isTurnActive = False, selector = None, deepness = 2):
+    def __init__(self, color: Color, isTurnActive = False, selector = None, deepness = 4):
         super(ArtificialIntelligence, self).__init__(color, isTurnActive, selector)
         self.deepness = deepness
 
@@ -23,9 +23,9 @@ class ArtificialIntelligence(Player):
             # maximizing
             maxEval = -infinity
             for possibleMove in gameBoard.getPossibleMoves(self.activePlayer(players)):
-                eval = self.minimax(self.simulateMove(gameBoard, possibleMove), depth - 1, alpha, beta, self.switchActivePlayer(players))
-                maxEval = max(maxEval, eval)
-                alpha = max(alpha, eval)
+                evaluation = self.minimax(self.simulateMove(gameBoard, possibleMove), depth - 1, alpha, beta, self.switchActivePlayer(players))
+                maxEval = max(maxEval, evaluation)
+                alpha = max(alpha, evaluation)
                 if (beta <= alpha):
                     break
             return maxEval
@@ -33,11 +33,9 @@ class ArtificialIntelligence(Player):
             # minimizing
             minEval = infinity
             for possibleMove in gameBoard.getPossibleMoves(self.activePlayer(players)):
-                eval = self.minimax(self.simulateMove(gameBoard, possibleMove), depth - 1, alpha, beta, self.switchActivePlayer(players))
-                # print("minEval = {} , eval = {}".format(minEval, eval))
-                minEval = min(minEval, eval)
-                
-                beta = min(beta, eval)
+                evaluation = self.minimax(self.simulateMove(gameBoard, possibleMove), depth - 1, alpha, beta, self.switchActivePlayer(players))
+                minEval = min(minEval, evaluation)
+                beta = min(beta, evaluation)
                 if (beta <= alpha):
                     break
             return minEval
@@ -83,7 +81,8 @@ class ArtificialIntelligence(Player):
         possibleMoves = gameBoard.getPossibleMoves(self.activePlayer(players))
         for possibleMove in possibleMoves:
             values.append(self.minimax(self.simulateMove(gameBoard, possibleMove), self.deepness, alpha, beta, players))
-
+            
+            
         if(self.color == Color.BLACK):
             # search max value
             bestMoveIndex = -1

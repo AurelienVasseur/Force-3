@@ -11,6 +11,8 @@ from GameStatus import GameStatus
 from StatusType import StatusType
 from WinType import WinType
 from Direction import Direction
+import random
+import math
 
 class GameBoard:
 
@@ -129,7 +131,7 @@ class GameBoard:
         
         return possibleMoves
 
-
+    
     def getGameStatus(self):
         # line victory check
         for i in range(len(self.grid)):
@@ -143,10 +145,8 @@ class GameBoard:
                 return GameStatus(StatusType.END, WinType.COLUMN, grid[0][i].color)
         # diagonal victory check
         if(grid[0][0].type == "Pawn" and grid[1][1].type == "Pawn" and grid[2][2].type == "Pawn" and grid[0][0].color == grid[1][1].color and grid[1][1].color == grid[2][2].color):
-            print("{} player won with diagonal pawns alignment".format("BLACK" if grid[0][0].color == Color.BLACK else "WHITE"))
             return GameStatus(StatusType.END, WinType.DIAGONAL, grid[0][0].color)
         if(grid[0][2].type == "Pawn" and grid[1][1].type == "Pawn" and grid[2][0].type == "Pawn" and grid[0][2].color == grid[1][1].color and grid[1][1].color == grid[2][0].color):
-            print("{} player won with reverse diagonal pawns alignment".format("BLACK" if grid[0][2].color == Color.BLACK else "WHITE"))
             return GameStatus(StatusType.END, WinType.REVERSE_DIAGONAL, grid[0][2].color)
         return GameStatus(StatusType.ONGOING)
 
@@ -186,37 +186,43 @@ class GameBoard:
         
         
 
-    
+    # EVALUATION METHOD
     def getPlayerScore(self, player):
-        winScoreConstant = 3
-        nbAlignesLine = 0
-        nbAlignesColumn = 0
+        #return math.floor(random.random() * 100)
+        nbAlignesLineThis = 0
+        nbAlignesColumnThis = 0
+        nbAlignesLineOpponent = 0
+        nbAlignesColumnOpponent = 0
         score = 0
         for i in range(len(self.grid)):
             for j in range(len(self.grid[i])):
-                if(self.grid[i][j].type == "Pawn" and self.grid[i][j].color == player.color):
-                    nbAlignesLine += 1
-                if(self.grid[j][i].type == "Pawn" and self.grid[j][i].color == player.color):
-                    nbAlignesColumn += 1
-            if(nbAlignesLine == 2):
-                score += nbAlignesLine
-            elif(nbAlignesLine == 3):
-                score += nbAlignesLine * winScoreConstant
-            if(nbAlignesColumn == 2):
-                score += nbAlignesColumn
-            elif(nbAlignesColumn == 3):
-                score += nbAlignesColumn * winScoreConstant
-        if(self.grid[0][0].type == "Pawn" and self.grid[1][1].type == "Pawn" and self.grid[0][0].color == player.color and self.grid[1][1].color == player.color):
-            if(self.grid[2][2].type == "Pawn" and self.grid[2][2].color == player.color):
-                score = 3 * winScoreConstant
-            else:
-                score += 2
+                if(self.grid[i][j].type == "Pawn"):
+                    if(self.grid[i][j].color == player.color):
+                        nbAlignesLineThis += 1
+                    else:
+                        nbAlignesLineOpponent += 1
+                if(self.grid[j][i].type == "Pawn"):
+                    if(self.grid[j][i].color == player.color):
+                        nbAlignesColumnThis += 1
+                    else:
+                        nbAlignesColumnOpponent += 1
+            if(nbAlignesLineThis == 3 or nbAlignesColumnThis == 3):
+                score = 100
+            elif(nbAlignesLineOpponent == 3 or nbAlignesColumnOpponent == 3):
+                score = -10
         
-        if(self.grid[0][2].type == "Pawn" and self.grid[1][1].type == "Pawn" and self.grid[0][2].color == player.color and self.grid[1][1].color == player.color):
-            if(self.grid[2][0].type == "Pawn" and self.grid[2][0].color == player.color):
-                score = 3 * winScoreConstant
-            else:
-                score += 2
+        
+        if(self.grid[0][0].type == "Pawn" and self.grid[1][1].type == "Pawn" and self.grid[2][2].type == "Pawn"):
+            if(self.grid[0][0].color == player.color and self.grid[1][1].color == player.color and self.grid[2][2].color == player.color):
+                score = 100
+            if(self.grid[0][0].color != player.color and self.grid[1][1].color != player.color and self.grid[2][2].color != player.color):
+                score = -10
+        
+        if(self.grid[0][2].type == "Pawn" and self.grid[1][1].type == "Pawn" and self.grid[2][0].type == "Pawn"):
+            if(self.grid[0][2].color == player.color and self.grid[1][1].color == player.color and self.grid[2][0].color == player.color):
+                score = 100
+            if(self.grid[0][2].color != player.color and self.grid[1][1].color != player.color and self.grid[2][0].color != player.color):
+                score = -10
         
         if(player.color == Color.BLACK):
             return score

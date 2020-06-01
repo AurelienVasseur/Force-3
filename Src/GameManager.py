@@ -8,6 +8,7 @@ from StatusType import StatusType
 from copy import deepcopy
 from GameType import GameType
 from ArtificialIntelligence import ArtificialIntelligence
+import time
 
 class GameManager:
     def __init__(self, gameType = GameType.PLAYER_VS_PLAYER):
@@ -19,10 +20,10 @@ class GameManager:
             self.players[Color.WHITE.value] = Player(Color.WHITE)
         elif(self.gameType == GameType.PLAYER_VS_AI):
             self.players[Color.BLACK.value] = Player(Color.BLACK)
-            self.players[Color.WHITE.value] = ArtificialIntelligence(Color.WHITE)
+            self.players[Color.WHITE.value] = ArtificialIntelligence(Color.WHITE, 4)
         else:
-            self.players[Color.BLACK.value] = ArtificialIntelligence(Color.BLACK)
-            self.players[Color.WHITE.value] = ArtificialIntelligence(Color.WHITE)
+            self.players[Color.BLACK.value] = ArtificialIntelligence(Color.BLACK, 1)
+            self.players[Color.WHITE.value] = ArtificialIntelligence(Color.WHITE, 1)
         self.players[Color.BLACK.value].isTurnActive = True
 
 
@@ -46,15 +47,7 @@ class GameManager:
         print("{} wins by {} pawns alignment.".format(gameStatus.winner, gameStatus.winType))
         return True
 
-    def start(self):        
-        # display grid in console
-        """ 
-        for i in range(len(self.gameBoard.grid)):
-            for j in range(len(self.gameBoard.grid[i])):
-                print("{},".format(str(self.gameBoard.grid[i][j])), end="")
-            print()
-        """
-        
+    def start(self):
         pygame.init()
         window = pygame.display.set_mode((Window.WIDTH.value, Window.HEIGHT.value), pygame.RESIZABLE)
 
@@ -86,17 +79,24 @@ class GameManager:
         selectorBlackActiveImage = pygame.image.load("resources/images/selector_black_active.png")
         selectorBlackActiveImage = pygame.transform.scale(selectorBlackActiveImage, (Window.CELL_WIDTH.value, Window.CELL_HEIGHT.value))
         
-
+        timeLastAIAction = time.time()
         play = True
         while play:
             window.blit(background, (0,0))
             window.blit(gridImage, (Window.GRID_POSITION_X.value, Window.GRID_POSITION_Y.value))
+            currentTime = time.time()
 
+            if(self.gameType == GameType.AI_VS_AI or (self.gameType == GameType.PLAYER_VS_AI and self.getActivePlayer().color == Color.WHITE)):
+                if(currentTime - timeLastAIAction > 1):
+                        self.getActivePlayer().playBestMove(self.gameBoard, self.players)
+                        self.switchActivePlayer()
+                        play = not self.checkVictory()
+                        timeLastAIAction = time.time()
+            
             for event in pygame.event.get():
                 if(event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE)):
                     play = False
 
-                
                 if(self.gameType == GameType.PLAYER_VS_PLAYER or (self.gameType == GameType.PLAYER_VS_AI and self.getActivePlayer().color == Color.BLACK)):
                     if(event.type == pygame.KEYDOWN):
                         if(event.key == pygame.K_RETURN):
@@ -112,10 +112,6 @@ class GameManager:
                             self.getActivePlayer().selector.move(Direction.LEFT)
                         if(event.key == pygame.K_RIGHT or event.key == pygame.K_d):
                             self.getActivePlayer().selector.move(Direction.RIGHT)
-                else:
-                    self.getActivePlayer().playBestMove(self.gameBoard, self.players)
-                    self.switchActivePlayer()
-                    play = not self.checkVictory()
 
 
             for i in range(len(self.gameBoard.grid)):
