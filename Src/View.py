@@ -49,6 +49,9 @@ class View:
         self.startMenuAIVAI = pygame.transform.scale(self.startMenuAIVAI, (Window.BUTTON_WIDTH.value, Window.BUTTON_HEIGHT.value))
         self.startMenuAIVAIHover = pygame.image.load("resources/images/startmenu_aivai_hover.png")
         self.startMenuAIVAIHover = pygame.transform.scale(self.startMenuAIVAIHover, (Window.BUTTON_WIDTH.value, Window.BUTTON_HEIGHT.value))
+        self.startMenuControls = pygame.image.load("resources/images/startmenu_controls.png")
+        self.startMenuControls = pygame.transform.scale(self.startMenuControls, (Window.STARTMENU_CONTROLS_WIDTH.value, Window.STARTMENU_CONTROLS_HEIGHT.value))
+
 
         self.endMenuNewGame = pygame.image.load("resources/images/endmenu_newgame.png")
         self.endMenuNewGame = pygame.transform.scale(self.endMenuNewGame, (Window.BUTTON_WIDTH.value, Window.BUTTON_HEIGHT.value))
@@ -98,6 +101,8 @@ class View:
         self.window.blit(self.startMenuAIVPHover, (x, y))
     def blitStartMenuAIVAIHover(self, x, y):
         self.window.blit(self.startMenuAIVAIHover, (x, y))
+    def blitStartMenuControls(self, x, y):
+        self.window.blit(self.startMenuControls, (x, y))
     def blitEndMenuNewGameHover(self, x, y):
         self.window.blit(self.endMenuNewGameHover, (x, y))
     def blitEndMenuQuitHover(self, x, y):
@@ -118,6 +123,7 @@ class View:
         elif(mouseX >= Window.STARTMENU_AIVAI_POSITION_X.value and mouseX <= (Window.STARTMENU_AIVAI_POSITION_X.value + Window.BUTTON_WIDTH.value) and mouseY >= Window.STARTMENU_AIVAI_POSITION_Y.value and mouseY <= (Window.STARTMENU_AIVAI_POSITION_Y.value + Window.BUTTON_HEIGHT.value)):
             # AIVP button hover
             self.blitStartMenuAIVAIHover(Window.STARTMENU_AIVAI_POSITION_X.value, Window.STARTMENU_AIVAI_POSITION_Y.value)
+        self.blitStartMenuControls(Window.STARTMENU_CONTROLS_POSITION_X.value, Window.STARTMENU_CONTROLS_POSITION_Y.value)
         self.display()
 
     def blitEndMenu(self):
