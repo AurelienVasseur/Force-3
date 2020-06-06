@@ -1,5 +1,5 @@
-from Cell import Cell
-from Position import Position
+from .Cell import Cell
+from .Position import Position
 
 class Square(Cell):
 

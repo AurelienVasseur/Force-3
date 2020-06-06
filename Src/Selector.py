@@ -1,7 +1,7 @@
-from Position import Position
-from Direction import Direction
-from Move import Move
-from MoveType import MoveType
+from .Position import Position
+from .Direction import Direction
+from .Move import Move
+from .MoveType import MoveType
 
 class Selector:
 

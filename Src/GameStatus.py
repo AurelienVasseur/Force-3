@@ -1,6 +1,6 @@
-from StatusType import StatusType
-from WinType import WinType
-from Color import Color
+from .StatusType import StatusType
+from .WinType import WinType
+from .Color import Color
 
 class GameStatus():
 

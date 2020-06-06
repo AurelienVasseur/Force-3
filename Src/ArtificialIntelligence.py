@@ -1,6 +1,6 @@
-from Player import Player
-from Color import Color
-from GameBoard import GameBoard
+from .Player import Player
+from .Color import Color
+from .GameBoard import GameBoard
 import sys
 
 class ArtificialIntelligence(Player):

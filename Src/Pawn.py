@@ -1,6 +1,6 @@
-from Cell import Cell
-from Position import Position
-from Color import Color
+from .Cell import Cell
+from .Position import Position
+from .Color import Color
 
 class Pawn(Cell):
 

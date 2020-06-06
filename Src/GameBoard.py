@@ -1,16 +1,16 @@
-from Cell import Cell
-from Square import Square
-from Pawn import Pawn
-from Color import Color
-from Position import Position
+from .Cell import Cell
+from .Square import Square
+from .Pawn import Pawn
+from .Color import Color
+from .Position import Position
 from copy import deepcopy
-from Player import Player
-from Move import Move
-from MoveType import MoveType
-from GameStatus import GameStatus
-from StatusType import StatusType
-from WinType import WinType
-from Direction import Direction
+from .Player import Player
+from .Move import Move
+from .MoveType import MoveType
+from .GameStatus import GameStatus
+from .StatusType import StatusType
+from .WinType import WinType
+from .Direction import Direction
 import random
 import math
 

@@ -1,21 +1,28 @@
 import pygame
-from GameBoard import GameBoard
-from Player import Player
-from Window import Window
-from Color import Color
-from Direction import Direction
-from StatusType import StatusType
-from GameType import GameType
-from ArtificialIntelligence import ArtificialIntelligence
+from .GameBoard import GameBoard
+from .Player import Player
+from .Window import Window
+from .Color import Color
+from .Direction import Direction
+from .StatusType import StatusType
+from .GameType import GameType
+from .ArtificialIntelligence import ArtificialIntelligence
 import time
-from View import View
-from Config import Config
+from .View import View
+from .Config import Config
+import sys
 
 
 class GameManager:
-    def __init__(self, gameType = GameType.PLAYER_VS_PLAYER):
-        self.gameBoard = GameBoard()
+    def __init__(self):
+        self.gameBoard = None
         self.players = [None for i in range(2)]
+        self.gameType = None
+        self.view = View()
+        self.timeLastAIAction = time.time()
+
+    def init(self, gameType):
+        self.gameBoard = GameBoard()
         self.gameType = gameType
         if(self.gameType == GameType.PLAYER_VS_PLAYER):
             self.players[Color.BLACK.value] = Player(Color.BLACK, True)
@@ -26,25 +33,17 @@ class GameManager:
         else:
             self.players[Color.BLACK.value] = ArtificialIntelligence(Color.BLACK, True, None, Config.RESEARCH_DEPTH_AI_VS_AI.value)
             self.players[Color.WHITE.value] = ArtificialIntelligence(Color.WHITE, False, None, Config.RESEARCH_DEPTH_AI_VS_AI.value)
-        self.view = None
 
 
     def start(self):
-        self.view = View()
-
-        timeLastAIAction = time.time()
         play = True
         while play:
-            self.view.blitBackground()
-            self.view.blitGrid()
-
-            timeLastAIAction, play = self.handleAI(time.time(), timeLastAIAction)
-            if(play):
-                play = self.handleUserControls()
-
-            self.updateGUI()
-            self.view.display()
-
+            choice = self.showStartMenu()
+            self.init(choice)
+            self.showGame()
+            quitGame = self.showEndMenu()
+            if(quitGame):
+                play = False
         self.view.quit()
 
 
@@ -70,21 +69,86 @@ class GameManager:
         return True
 
 
+    def showStartMenu(self):
+        startMenu = True
+        while startMenu:
+            self.view.blitStartMenu()
+            choice = self.handleStartMenuChoice()
+            if(choice is not None):
+                startMenu = False
+        return choice
 
-    def handleAI(self, currentTime, timeLastAIAction):
+    def showGame(self):
+        play = True
+        while play:
+            self.view.blitBackground()
+            self.view.blitGrid()
+
+            play = self.handleAI()
+            if(play):
+                play = self.handleUserControls()
+                
+
+            self.updateGUI()
+            self.view.display()
+    
+    def showEndMenu(self):
+        endMenu = True
+        quitGame = None
+        while endMenu:
+            self.view.blitEndMenu()
+            quitGame = self.handleEndMenuChoice()
+            if(quitGame is not None):
+                endMenu = False
+        return quitGame
+
+
+    def handleAI(self):
         if(self.gameType == GameType.AI_VS_AI or (self.gameType == GameType.PLAYER_VS_AI and self.getActivePlayer().color == Color.WHITE)):
-            if(currentTime - timeLastAIAction > Config.AI_PAUSE_TIME.value):
+            if(time.time() - self.timeLastAIAction > Config.AI_PAUSE_TIME.value):
                 self.getActivePlayer().playBestMove(self.gameBoard, self.players)
                 self.switchActivePlayer()
-                timeLastAIAction = time.time()
+                self.timeLastAIAction = time.time()
                 if(self.checkVictory()):
-                    return timeLastAIAction, False
-        return timeLastAIAction, True
+                    return False
+        return True
+
+    def handleStartMenuChoice(self):
+        mouseX, mouseY = self.view.getMousePos()
+        for event in pygame.event.get():
+            if(event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE)):
+                self.view.quit()
+                sys.exit()
+            
+            if(event.type == pygame.MOUSEBUTTONDOWN and event.button == 1):
+                if(mouseX >= Window.STARTMENU_PVP_POSITION_X.value and mouseX <= (Window.STARTMENU_PVP_POSITION_X.value + Window.BUTTON_WIDTH.value) and mouseY >= Window.STARTMENU_PVP_POSITION_Y.value and mouseY <= (Window.STARTMENU_PVP_POSITION_Y.value + Window.BUTTON_HEIGHT.value)):
+                    # PVP button click
+                    return GameType.PLAYER_VS_PLAYER
+                elif(mouseX >= Window.STARTMENU_AIVP_POSITION_X.value and mouseX <= (Window.STARTMENU_AIVP_POSITION_X.value + Window.BUTTON_WIDTH.value) and mouseY >= Window.STARTMENU_AIVP_POSITION_Y.value and mouseY <= (Window.STARTMENU_AIVP_POSITION_Y.value + Window.BUTTON_HEIGHT.value)):
+                    # AIVP button click
+                    return GameType.PLAYER_VS_AI
+                elif(mouseX >= Window.STARTMENU_AIVAI_POSITION_X.value and mouseX <= (Window.STARTMENU_AIVAI_POSITION_X.value + Window.BUTTON_WIDTH.value) and mouseY >= Window.STARTMENU_AIVAI_POSITION_Y.value and mouseY <= (Window.STARTMENU_AIVAI_POSITION_Y.value + Window.BUTTON_HEIGHT.value)):
+                    # AIVP button click
+                    return GameType.AI_VS_AI
+
+    def handleEndMenuChoice(self):
+        mouseX, mouseY = self.view.getMousePos()
+        for event in pygame.event.get():
+            if(event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE)):
+                self.view.quit()
+                sys.exit()
+
+            if(event.type == pygame.MOUSEBUTTONDOWN and event.button == 1):
+                if(mouseX >= Window.ENDMENU_NEWGAME_POSITION_X.value and mouseX <= (Window.ENDMENU_NEWGAME_POSITION_X.value + Window.BUTTON_WIDTH.value) and mouseY >= Window.ENDMENU_NEWGAME_POSITION_Y.value and mouseY <= (Window.ENDMENU_NEWGAME_POSITION_Y.value + Window.BUTTON_HEIGHT.value)):
+                    return False
+                if(mouseX >= Window.ENDMENU_QUIT_POSITION_X.value and mouseX <= (Window.ENDMENU_QUIT_POSITION_X.value + Window.BUTTON_WIDTH.value) and mouseY >= Window.ENDMENU_QUIT_POSITION_Y.value and mouseY <= (Window.ENDMENU_QUIT_POSITION_Y.value + Window.BUTTON_HEIGHT.value)):
+                    return True
 
     def handleUserControls(self):
         for event in pygame.event.get():
             if(event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE)):
-                return False
+                self.view.quit()
+                sys.exit()
 
             if(self.gameType == GameType.PLAYER_VS_PLAYER or (self.gameType == GameType.PLAYER_VS_AI and self.getActivePlayer().color == Color.BLACK)):
                 if(event.type == pygame.KEYDOWN):
@@ -180,4 +244,3 @@ class GameManager:
 
 
 
-GameManager(GameType.PLAYER_VS_AI).start()

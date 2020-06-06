@@ -1,6 +1,6 @@
-from Color import Color
-from Selector import Selector
-from Position import Position
+from .Color import Color
+from .Selector import Selector
+from .Position import Position
 from copy import deepcopy
 
 class Player:
