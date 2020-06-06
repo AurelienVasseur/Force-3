@@ -5,8 +5,8 @@ import math
 class Window(Enum):
     SCALE = 0.1
 
-    GRID_WIDTH = 500
-    GRID_HEIGHT = 500
+    GRID_WIDTH = 400
+    GRID_HEIGHT = 400
 
     GRID_OFFSET_X = math.floor(0.035 * GRID_WIDTH)
     GRID_OFFSET_Y = math.floor(0.035 * GRID_HEIGHT)

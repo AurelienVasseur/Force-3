@@ -5,6 +5,7 @@ class View:
 
     def __init__(self):
         pygame.init()
+        pygame.display.set_caption('Force3')
 
         self.window = pygame.display.set_mode((Window.WIDTH.value, Window.HEIGHT.value), pygame.RESIZABLE)
 
