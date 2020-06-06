@@ -8,7 +8,7 @@ Jeu Force 3 années 80.
 
 
 ## Lancer le projet
-* `python ./src/GameManager.py`
+* `python Main.py`
 
 ## Désinstaller les packages
 * `pip uninstall -r requirements.txt`
