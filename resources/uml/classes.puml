@@ -1,0 +1,134 @@
+@startuml
+class GameManager {
++ gameBoard: GameBoard
++ players: Player[2]
++ gameType: GameType
++ view: View
+---
+}
+class GameBoard {
++ grid: Cell[3][3]
++ pawns: Pawn[2][3]
++ previousActionWasDoubleSlide: boolean
+---
+}
+class Player {
++ color: Color
++ selector: Selector
++ isTurnActive: boolean
+---
+}
+class ArtificialIntelligence extends Player {
++ deepness: int
+---
+}
+class View {
+pygame images
+---
+}
+class Cell {
++ position: Position
++ type: string
+---
+}
+class Square extends Cell {
+---
+}
+class Pawn extends Cell {
++ color: Color
+---
+}
+class Selector {
++ position: Position
++ minLine: int
++ maxLine: int
++ isActive: boolean
++ activeCell: Cell
+---
+}
+class Position {
++ x: int
++ y: int
+---
+}
+enum Color {
++ BLACK
++ WHITE
+}
+enum Config {
++ RESEARCH_DEPTH_PLAYER_VS_AI
++ RESEARCH_DEPTH_AI_VS_AI
++ AI_PAUSE_TIME
+}
+enum Direction {
++ UP
++ DOWN
++ LEFT
++ RIGHT
+}
+class GameStatus {
++ status: StatusType
++ winType: WinType
++ winner: Color
+---
+}
+enum GameType {
++ QUIT
++ PLAYER_VS_PLAYER
++ PLAYER_VS_AI
++ AI_VS_AI
+}
+class Move {
++ start: Position
++ end: Position
++ moveType: MoveType
++ direction: Direction
+---
+}
+enum MoveType {
++ PUT_UNUSED_PAWN_ON_SQUARE
++ PUT_USED_PAWN_ON_SQUARE
++ SIMPLE_SLIDE
++ DOUBLE_SLIDE
+}
+enum StatusType {
++ ONGOING
++ END
+}
+enum Window {
++ WIDTH
++ HEIGHT
++ GRID_WIDTH
++ GRID_HEIGHT
+}
+enum WinType {
++ LINE
++ COLUMN
++ DIAGONAL
++ REVERSE_COLUMN
+}
+
+GameManager *-- GameBoard
+GameManager *-- Player
+GameManager *-- View
+GameBoard *-- Cell
+Player *-- Selector
+Player *-- Color
+Cell *-- Position
+Pawn *-- Color
+Selector *-- Position
+GameStatus *-- Color
+GameStatus *-- StatusType
+GameStatus *-- WinType
+Move *-- Position
+Move *-- MoveType
+Move *-- Direction
+
+GameManager <.. Config
+GameManager <.. GameType
+GameManager <.. StatusType
+View <.. Window
+GameBoard <.. GameStatus
+GameBoard <.. Move
+Selector <.. Move
+@enduml
