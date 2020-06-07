@@ -5,7 +5,7 @@ class View:
 
     def __init__(self):
         pygame.init()
-        pygame.display.set_caption('Force3')
+        pygame.display.set_caption('Force 3')
 
         self.window = pygame.display.set_mode((Window.WIDTH.value, Window.HEIGHT.value), pygame.RESIZABLE)
 
@@ -37,6 +37,8 @@ class View:
         self.selectorBlackActiveImage = pygame.image.load("resources/images/selector_black_active.png")
         self.selectorBlackActiveImage = pygame.transform.scale(self.selectorBlackActiveImage, (Window.CELL_WIDTH.value, Window.CELL_HEIGHT.value))
 
+        self.startMenuTitle = pygame.image.load("resources/images/startmenu_title.png")
+        self.startMenuTitle = pygame.transform.scale(self.startMenuTitle, (Window.BUTTON_WIDTH.value, Window.BUTTON_HEIGHT.value))
         self.startMenuPVP = pygame.image.load("resources/images/startmenu_pvp.png")
         self.startMenuPVP = pygame.transform.scale(self.startMenuPVP, (Window.BUTTON_WIDTH.value, Window.BUTTON_HEIGHT.value))
         self.startMenuPVPHover = pygame.image.load("resources/images/startmenu_pvp_hover.png")
@@ -52,7 +54,8 @@ class View:
         self.startMenuControls = pygame.image.load("resources/images/startmenu_controls.png")
         self.startMenuControls = pygame.transform.scale(self.startMenuControls, (Window.STARTMENU_CONTROLS_WIDTH.value, Window.STARTMENU_CONTROLS_HEIGHT.value))
 
-
+        self.endMenuTitle = pygame.image.load("resources/images/endmenu_title.png")
+        self.endMenuTitle = pygame.transform.scale(self.endMenuTitle, (Window.BUTTON_WIDTH.value, Window.BUTTON_HEIGHT.value))
         self.endMenuNewGame = pygame.image.load("resources/images/endmenu_newgame.png")
         self.endMenuNewGame = pygame.transform.scale(self.endMenuNewGame, (Window.BUTTON_WIDTH.value, Window.BUTTON_HEIGHT.value))
         self.endMenuNewGameHover = pygame.image.load("resources/images/endmenu_newgame_hover.png")
@@ -85,12 +88,16 @@ class View:
     def blitSelectorWhiteActive(self, x, y):
         self.window.blit(self.selectorWhiteActiveImage, (x, y))
     
+    def blitStartMenuTitle(self, x, y):
+        self.window.blit(self.startMenuTitle, (x, y))
     def blitStartMenuPVP(self, x, y):
         self.window.blit(self.startMenuPVP, (x, y))
     def blitStartMenuAIVP(self, x, y):
         self.window.blit(self.startMenuAIVP, (x, y))
     def blitStartMenuAIVAI(self, x, y):
         self.window.blit(self.startMenuAIVAI, (x, y))
+    def blitEndMenuTitle(self, x, y):
+        self.window.blit(self.endMenuTitle, (x, y))
     def blitEndMenuNewGame(self, x, y):
         self.window.blit(self.endMenuNewGame, (x, y))
     def blitEndMenuQuit(self, x, y):
@@ -111,6 +118,7 @@ class View:
     def blitStartMenu(self):
         mouseX, mouseY = self.getMousePos()
         self.blitBackground()
+        self.blitStartMenuTitle(Window.STARTMENU_POSITION_X.value, Window.BUTTON_OFFSET_Y.value)
         self.blitStartMenuPVP(Window.STARTMENU_PVP_POSITION_X.value, Window.STARTMENU_PVP_POSITION_Y.value)
         self.blitStartMenuAIVP(Window.STARTMENU_AIVP_POSITION_X.value, Window.STARTMENU_AIVP_POSITION_Y.value)
         self.blitStartMenuAIVAI(Window.STARTMENU_AIVAI_POSITION_X.value, Window.STARTMENU_AIVAI_POSITION_Y.value)
@@ -129,6 +137,7 @@ class View:
     def blitEndMenu(self):
         mouseX, mouseY = self.getMousePos()
         self.blitBackground()
+        self.blitEndMenuTitle(Window.ENDMENU_POSITION_X.value, Window.BUTTON_OFFSET_Y.value)
         self.blitEndMenuNewGame(Window.ENDMENU_NEWGAME_POSITION_X.value, Window.ENDMENU_NEWGAME_POSITION_Y.value)
         self.blitEndMenuQuit(Window.ENDMENU_QUIT_POSITION_X.value, Window.ENDMENU_QUIT_POSITION_Y.value)
         if(mouseX >= Window.ENDMENU_NEWGAME_POSITION_X.value and mouseX <= (Window.ENDMENU_NEWGAME_POSITION_X.value + Window.BUTTON_WIDTH.value) and mouseY >= Window.ENDMENU_NEWGAME_POSITION_Y.value and mouseY <= (Window.ENDMENU_NEWGAME_POSITION_Y.value + Window.BUTTON_HEIGHT.value)):
