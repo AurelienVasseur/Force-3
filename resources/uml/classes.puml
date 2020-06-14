@@ -9,7 +9,7 @@ class GameManager {
 class GameBoard {
 + grid: Cell[3][3]
 + pawns: Pawn[2][3]
-+ previousActionWasDoubleSlide: boolean
++ previousMove: Move
 ---
 }
 class Player {

@@ -62,12 +62,11 @@ class Selector:
                         if(self.position.y > self.activeCell.position.y):
                             # move to right
                             if(self.position.y - self.activeCell.position.y > 1):
-                                if(not gameBoard.previousActionWasDoubleSlide):
+                                if(not gameBoard.isOppositeMove(Move(self.activeCell.position, self.position, MoveType.DOUBLE_SLIDE, Direction.RIGHT))):
                                     # move 2 to right
                                     gameBoard.move(Move(self.activeCell.position, self.position, MoveType.DOUBLE_SLIDE, Direction.RIGHT))
                                     self.isActive = False
                                     self.activeCell = None
-                                    gameBoard.previousActionWasDoubleSlide = True
                                     return True
                                 else:
                                     # cancel try to double move for 2nd time
@@ -75,21 +74,25 @@ class Selector:
                                     self.activeCell = None
                                     return False
                             else:
-                                # move 1 to right
-                                gameBoard.move(Move(self.activeCell.position, self.position, MoveType.SIMPLE_SLIDE, Direction.RIGHT))
-                                self.isActive = False
-                                self.activeCell = None
-                                gameBoard.previousActionWasDoubleSlide = False
-                                return True
+                                if(not gameBoard.isOppositeMove(Move(self.activeCell.position, self.position, MoveType.SIMPLE_SLIDE, Direction.RIGHT))):
+                                    # move 1 to right
+                                    gameBoard.move(Move(self.activeCell.position, self.position, MoveType.SIMPLE_SLIDE, Direction.RIGHT))
+                                    self.isActive = False
+                                    self.activeCell = None
+                                    return True
+                                else:
+                                   # cancel try to simple move for 2nd time
+                                    self.isActive = False
+                                    self.activeCell = None
+                                    return False 
                         else:
                             # move to left
                             if(self.activeCell.position.y - self.position.y > 1):
-                                if(not gameBoard.previousActionWasDoubleSlide):
+                                if(not gameBoard.isOppositeMove(Move(self.activeCell.position, self.position, MoveType.DOUBLE_SLIDE, Direction.LEFT))):
                                     # move 2 to left
                                     gameBoard.move(Move(self.activeCell.position, self.position, MoveType.DOUBLE_SLIDE, Direction.LEFT))
                                     self.isActive = False
                                     self.activeCell = None
-                                    gameBoard.previousActionWasDoubleSlide = True
                                     return True
                                 else:
                                     # cancel try to double move for 2nd time
@@ -97,23 +100,27 @@ class Selector:
                                     self.activeCell = None
                                     return False
                             else:
-                                # move 1 to left
-                                gameBoard.move(Move(self.activeCell.position, self.position, MoveType.SIMPLE_SLIDE, Direction.LEFT))
-                                self.isActive = False
-                                self.activeCell = None
-                                gameBoard.previousActionWasDoubleSlide = False
-                                return True
+                                if(not gameBoard.isOppositeMove(Move(self.activeCell.position, self.position, MoveType.SIMPLE_SLIDE, Direction.LEFT))):
+                                    # move 1 to left
+                                    gameBoard.move(Move(self.activeCell.position, self.position, MoveType.SIMPLE_SLIDE, Direction.LEFT))
+                                    self.isActive = False
+                                    self.activeCell = None
+                                    return True
+                                else:
+                                    # cancel try to simple move for 2nd time
+                                    self.isActive = False
+                                    self.activeCell = None
+                                    return False 
                     elif(self.position.y == self.activeCell.position.y):
                         # move cells on same column to current Cell
                         if(self.position.x > self.activeCell.position.x):
                             # move down
                             if(self.position.x - self.activeCell.position.x > 1):
-                                if(not gameBoard.previousActionWasDoubleSlide):
+                                if(not gameBoard.isOppositeMove(Move(self.activeCell.position, self.position, MoveType.DOUBLE_SLIDE, Direction.DOWN))):
                                     # move 2 down
                                     gameBoard.move(Move(self.activeCell.position, self.position, MoveType.DOUBLE_SLIDE, Direction.DOWN))
                                     self.isActive = False
                                     self.activeCell = None
-                                    gameBoard.previousActionWasDoubleSlide = True
                                     return True
                                 else:
                                     # cancel try to double move for 2nd time
@@ -121,21 +128,25 @@ class Selector:
                                     self.activeCell = None
                                     return False
                             else:
-                                # move 1 down
-                                gameBoard.move(Move(self.activeCell.position, self.position, MoveType.SIMPLE_SLIDE, Direction.DOWN))
-                                self.isActive = False
-                                self.activeCell = None
-                                gameBoard.previousActionWasDoubleSlide = False
-                                return True
+                                if(not gameBoard.isOppositeMove(Move(self.activeCell.position, self.position, MoveType.SIMPLE_SLIDE, Direction.DOWN))):
+                                    # move 1 down
+                                    gameBoard.move(Move(self.activeCell.position, self.position, MoveType.SIMPLE_SLIDE, Direction.DOWN))
+                                    self.isActive = False
+                                    self.activeCell = None
+                                    return True
+                                else:
+                                    # cancel try to simple move for 2nd time
+                                    self.isActive = False
+                                    self.activeCell = None
+                                    return False
                         else:
                             # move up
                             if(self.activeCell.position.x - self.position.x > 1):
-                                if(not gameBoard.previousActionWasDoubleSlide):
+                                if(not gameBoard.isOppositeMove(Move(self.activeCell.position, self.position, MoveType.DOUBLE_SLIDE, Direction.UP))):
                                 # move 2 up
                                     gameBoard.move(Move(self.activeCell.position, self.position, MoveType.DOUBLE_SLIDE, Direction.UP))
                                     self.isActive = False
                                     self.activeCell = None
-                                    gameBoard.previousActionWasDoubleSlide = True
                                     return True
                                 else:
                                     # cancel try to double move for 2nd time
@@ -143,12 +154,17 @@ class Selector:
                                     self.activeCell = None
                                     return False
                             else:
-                                # move 1 up
-                                gameBoard.move(Move(self.activeCell.position, self.position, MoveType.SIMPLE_SLIDE, Direction.UP))
-                                self.isActive = False
-                                self.activeCell = None
-                                gameBoard.previousActionWasDoubleSlide = False
-                                return True
+                                if(not gameBoard.isOppositeMove(Move(self.activeCell.position, self.position, MoveType.SIMPLE_SLIDE, Direction.UP))):
+                                    # move 1 up
+                                    gameBoard.move(Move(self.activeCell.position, self.position, MoveType.SIMPLE_SLIDE, Direction.UP))
+                                    self.isActive = False
+                                    self.activeCell = None
+                                    return True
+                                else:
+                                    # cancel try to simple move for 2nd time
+                                    self.isActive = False
+                                    self.activeCell = None
+                                    return False
                     else:
                         # cancel after trying to move squares on grid
                         self.isActive = False
@@ -166,14 +182,12 @@ class Selector:
                             gameBoard.move(Move(Position(playerIndex, yIndex), self.position, MoveType.PUT_UNUSED_PAWN_ON_SQUARE))
                             self.isActive = False
                             self.activeCell = None
-                            gameBoard.previousActionWasDoubleSlide = False
                             return True
                         else:
                             # put used pawn on free square
                             gameBoard.move(Move(self.activeCell.position, self.position, MoveType.PUT_USED_PAWN_ON_SQUARE))
                             self.isActive = False
                             self.activeCell = None
-                            gameBoard.previousActionWasDoubleSlide = False
                             return True
                     else:
                         # cancel try to put owned pawn on cell already containing a pawn

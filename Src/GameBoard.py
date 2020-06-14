@@ -19,13 +19,13 @@ class GameBoard:
     def __init__(self, gameBoard = None):
         self.grid = [[None for j in range(3)] for i in range(3)]
         self.pawns = [[None for j in range(3)] for i in range(2)]
-        self.previousActionWasDoubleSlide = False
+        self.previousMove = None
 
 
         if(gameBoard is not None):
             self.grid = deepcopy(gameBoard.grid)
             self.pawns = deepcopy(gameBoard.pawns)
-            self.previousActionWasDoubleSlide = deepcopy(gameBoard.previousActionWasDoubleSlide)
+            self.previousMove = deepcopy(gameBoard.previousMove)
         else:
             
             for i in range(len(self.grid)):
@@ -68,66 +68,60 @@ class GameBoard:
                         # first line
                         if(cell.position.y == 0):
                             # top left corner
-                            possibleMoves.append(Move(Position(0, 1), cell.position, MoveType.SIMPLE_SLIDE, Direction.LEFT))
-                            possibleMoves.append(Move(Position(1, 0), cell.position, MoveType.SIMPLE_SLIDE, Direction.UP))
-                            if(not self.previousActionWasDoubleSlide):
-                                possibleMoves.append(Move(Position(0, 2), cell.position, MoveType.DOUBLE_SLIDE, Direction.LEFT))
-                                possibleMoves.append(Move(Position(2, 0), cell.position, MoveType.DOUBLE_SLIDE, Direction.UP))
+                            self.tryAppendMove(possibleMoves, Move(Position(0, 1), cell.position, MoveType.SIMPLE_SLIDE, Direction.LEFT))
+                            self.tryAppendMove(possibleMoves, Move(Position(1, 0), cell.position, MoveType.SIMPLE_SLIDE, Direction.UP))
+                            self.tryAppendMove(possibleMoves, Move(Position(0, 2), cell.position, MoveType.DOUBLE_SLIDE, Direction.LEFT))
+                            self.tryAppendMove(possibleMoves, Move(Position(2, 0), cell.position, MoveType.DOUBLE_SLIDE, Direction.UP))
                         elif(cell.position.y == 2):
                             # top right corner
-                            possibleMoves.append(Move(Position(0, 1), cell.position, MoveType.SIMPLE_SLIDE, Direction.RIGHT))
-                            possibleMoves.append(Move(Position(1, 2), cell.position, MoveType.SIMPLE_SLIDE, Direction.UP))
-                            if(not self.previousActionWasDoubleSlide):
-                                possibleMoves.append(Move(Position(0, 0), cell.position, MoveType.DOUBLE_SLIDE, Direction.RIGHT))
-                                possibleMoves.append(Move(Position(2, 2), cell.position, MoveType.DOUBLE_SLIDE, Direction.UP))
+                            self.tryAppendMove(possibleMoves, Move(Position(0, 1), cell.position, MoveType.SIMPLE_SLIDE, Direction.RIGHT))
+                            self.tryAppendMove(possibleMoves, Move(Position(1, 2), cell.position, MoveType.SIMPLE_SLIDE, Direction.UP))
+                            self.tryAppendMove(possibleMoves, Move(Position(0, 0), cell.position, MoveType.DOUBLE_SLIDE, Direction.RIGHT))
+                            self.tryAppendMove(possibleMoves, Move(Position(2, 2), cell.position, MoveType.DOUBLE_SLIDE, Direction.UP))
                         else:
                             # top middle
-                            possibleMoves.append(Move(Position(0, 0), cell.position, MoveType.SIMPLE_SLIDE, Direction.LEFT))
-                            possibleMoves.append(Move(Position(0, 2), cell.position, MoveType.SIMPLE_SLIDE, Direction.RIGHT))
-                            possibleMoves.append(Move(Position(1, 1), cell.position, MoveType.SIMPLE_SLIDE, Direction.UP))
-                            if(not self.previousActionWasDoubleSlide):
-                                possibleMoves.append(Move(Position(2, 1), cell.position, MoveType.DOUBLE_SLIDE, Direction.UP))
+                            self.tryAppendMove(possibleMoves, Move(Position(0, 0), cell.position, MoveType.SIMPLE_SLIDE, Direction.RIGHT))
+                            self.tryAppendMove(possibleMoves, Move(Position(0, 2), cell.position, MoveType.SIMPLE_SLIDE, Direction.LEFT))
+                            self.tryAppendMove(possibleMoves, Move(Position(1, 1), cell.position, MoveType.SIMPLE_SLIDE, Direction.UP))
+                            self.tryAppendMove(possibleMoves, Move(Position(2, 1), cell.position, MoveType.DOUBLE_SLIDE, Direction.UP))
                     elif(cell.position.x == 2):
                         # last line
                         if(cell.position.y == 0):
                             # bottom left corner
-                            possibleMoves.append(Move(Position(2, 1), cell.position, MoveType.SIMPLE_SLIDE, Direction.LEFT))
-                            possibleMoves.append(Move(Position(1, 0), cell.position, MoveType.SIMPLE_SLIDE, Direction.DOWN))
-                            if(not self.previousActionWasDoubleSlide):
-                                possibleMoves.append(Move(Position(2, 2), cell.position, MoveType.DOUBLE_SLIDE, Direction.LEFT))
-                                possibleMoves.append(Move(Position(0, 0), cell.position, MoveType.DOUBLE_SLIDE, Direction.DOWN))
+                            self.tryAppendMove(possibleMoves, Move(Position(2, 1), cell.position, MoveType.SIMPLE_SLIDE, Direction.LEFT))
+                            self.tryAppendMove(possibleMoves, Move(Position(1, 0), cell.position, MoveType.SIMPLE_SLIDE, Direction.DOWN))
+                            self.tryAppendMove(possibleMoves, Move(Position(2, 2), cell.position, MoveType.DOUBLE_SLIDE, Direction.LEFT))
+                            self.tryAppendMove(possibleMoves, Move(Position(0, 0), cell.position, MoveType.DOUBLE_SLIDE, Direction.DOWN))
                         elif(cell.position.y == 2):
                             # bottom right corner
-                            possibleMoves.append(Move(Position(2, 1), cell.position, MoveType.SIMPLE_SLIDE, Direction.RIGHT))
-                            possibleMoves.append(Move(Position(1, 2), cell.position, MoveType.SIMPLE_SLIDE, Direction.DOWN))
-                            if(not self.previousActionWasDoubleSlide):
-                                possibleMoves.append(Move(Position(2, 0), cell.position, MoveType.DOUBLE_SLIDE, Direction.RIGHT))
-                                possibleMoves.append(Move(Position(0, 2), cell.position, MoveType.DOUBLE_SLIDE, Direction.DOWN))
+                            self.tryAppendMove(possibleMoves, Move(Position(2, 1), cell.position, MoveType.SIMPLE_SLIDE, Direction.RIGHT))
+                            self.tryAppendMove(possibleMoves, Move(Position(1, 2), cell.position, MoveType.SIMPLE_SLIDE, Direction.DOWN))
+                            self.tryAppendMove(possibleMoves, Move(Position(2, 0), cell.position, MoveType.DOUBLE_SLIDE, Direction.RIGHT))
+                            self.tryAppendMove(possibleMoves, Move(Position(0, 2), cell.position, MoveType.DOUBLE_SLIDE, Direction.DOWN))
                         else:
                             # bottom middle
-                            possibleMoves.append(Move(Position(2, 0), cell.position, MoveType.SIMPLE_SLIDE, Direction.RIGHT))
-                            possibleMoves.append(Move(Position(2, 2), cell.position, MoveType.SIMPLE_SLIDE, Direction.LEFT))
-                            possibleMoves.append(Move(Position(1, 1), cell.position, MoveType.SIMPLE_SLIDE, Direction.DOWN))
-                            if(not self.previousActionWasDoubleSlide):
-                                possibleMoves.append(Move(Position(0, 1), cell.position, MoveType.DOUBLE_SLIDE, Direction.DOWN))
+                            self.tryAppendMove(possibleMoves, Move(Position(2, 0), cell.position, MoveType.SIMPLE_SLIDE, Direction.RIGHT))
+                            self.tryAppendMove(possibleMoves, Move(Position(2, 2), cell.position, MoveType.SIMPLE_SLIDE, Direction.LEFT))
+                            self.tryAppendMove(possibleMoves, Move(Position(1, 1), cell.position, MoveType.SIMPLE_SLIDE, Direction.DOWN))
+                            self.tryAppendMove(possibleMoves, Move(Position(0, 1), cell.position, MoveType.DOUBLE_SLIDE, Direction.DOWN))
                     else:
                         # middle line
                         if(cell.position.y == 0):
                             # middle left
-                            possibleMoves.append(Move(Position(1, 1), cell.position, MoveType.SIMPLE_SLIDE, Direction.LEFT))
-                            possibleMoves.append(Move(Position(0, 0), cell.position, MoveType.SIMPLE_SLIDE, Direction.DOWN))
-                            possibleMoves.append(Move(Position(2, 0), cell.position, MoveType.SIMPLE_SLIDE, Direction.UP))
+                            self.tryAppendMove(possibleMoves, Move(Position(1, 1), cell.position, MoveType.SIMPLE_SLIDE, Direction.LEFT))
+                            self.tryAppendMove(possibleMoves, Move(Position(0, 0), cell.position, MoveType.SIMPLE_SLIDE, Direction.DOWN))
+                            self.tryAppendMove(possibleMoves, Move(Position(2, 0), cell.position, MoveType.SIMPLE_SLIDE, Direction.UP))
                         elif(cell.position.y == 2):
                             # middle right
-                            possibleMoves.append(Move(Position(1, 1), cell.position, MoveType.SIMPLE_SLIDE, Direction.RIGHT))
-                            possibleMoves.append(Move(Position(0, 2), cell.position, MoveType.SIMPLE_SLIDE, Direction.DOWN))
-                            possibleMoves.append(Move(Position(2, 2), cell.position, MoveType.SIMPLE_SLIDE, Direction.UP))
+                            self.tryAppendMove(possibleMoves, Move(Position(1, 1), cell.position, MoveType.SIMPLE_SLIDE, Direction.RIGHT))
+                            self.tryAppendMove(possibleMoves, Move(Position(0, 2), cell.position, MoveType.SIMPLE_SLIDE, Direction.DOWN))
+                            self.tryAppendMove(possibleMoves, Move(Position(2, 2), cell.position, MoveType.SIMPLE_SLIDE, Direction.UP))
                         else:
                             # middle middle
-                            possibleMoves.append(Move(Position(1, 0), cell.position, MoveType.SIMPLE_SLIDE, Direction.RIGHT))
-                            possibleMoves.append(Move(Position(1, 2), cell.position, MoveType.SIMPLE_SLIDE, Direction.LEFT))
-                            possibleMoves.append(Move(Position(0, 1), cell.position, MoveType.SIMPLE_SLIDE, Direction.DOWN))
-                            possibleMoves.append(Move(Position(2, 1), cell.position, MoveType.SIMPLE_SLIDE, Direction.UP))
+                            self.tryAppendMove(possibleMoves, Move(Position(1, 0), cell.position, MoveType.SIMPLE_SLIDE, Direction.RIGHT))
+                            self.tryAppendMove(possibleMoves, Move(Position(1, 2), cell.position, MoveType.SIMPLE_SLIDE, Direction.LEFT))
+                            self.tryAppendMove(possibleMoves, Move(Position(0, 1), cell.position, MoveType.SIMPLE_SLIDE, Direction.DOWN))
+                            self.tryAppendMove(possibleMoves, Move(Position(2, 1), cell.position, MoveType.SIMPLE_SLIDE, Direction.UP))
         # print("nbPossibleMoves={}".format(len(possibleMoves)))
         return possibleMoves
 
@@ -158,14 +152,17 @@ class GameBoard:
         if(move.moveType == MoveType.PUT_UNUSED_PAWN_ON_SQUARE):
             self.grid[move.end.x][move.end.y] = self.pawns[move.start.x][move.start.y]
             self.grid[move.end.x][move.end.y].position = Position(move.end.x, move.end.y)
+            self.previousMove = move
         elif(move.moveType == MoveType.PUT_USED_PAWN_ON_SQUARE):
             self.grid[move.end.x][move.end.y] = self.grid[move.start.x][move.start.y]
             self.grid[move.end.x][move.end.y].position = Position(move.end.x, move.end.y)
             self.grid[move.start.x][move.start.y] = Square(Position(move.start.x, move.start.y))
+            self.previousMove = move
         elif(move.moveType == MoveType.SIMPLE_SLIDE):
             self.grid[move.end.x][move.end.y] = self.grid[move.start.x][move.start.y]
             self.grid[move.end.x][move.end.y].position = Position(move.end.x, move.end.y)
             self.grid[move.start.x][move.start.y] = Cell(Position(move.start.x, move.start.y))
+            self.previousMove = move
         elif(move.moveType == MoveType.DOUBLE_SLIDE):
             offset = Position()
             if(move.direction == Direction.UP):
@@ -182,6 +179,7 @@ class GameBoard:
             self.grid[move.start.x + offset.x][move.start.y + offset.y] = self.grid[move.start.x][move.start.y]
             self.grid[move.start.x + offset.x][move.start.y + offset.y].position = Position(move.start.x + offset.x, move.start.y + offset.y)
             self.grid[move.start.x][move.start.y] = Cell(Position(move.start.x, move.start.y))
+            self.previousMove = move
         
         
         
@@ -198,3 +196,26 @@ class GameBoard:
                 return sign * 1
             return sign * -1
         return 0
+
+    
+    def isOppositeMove(self, move):
+        if(self.previousMove is not None and self.previousMove.moveType == move.moveType and self.previousMove.start.x == move.end.x and self.previousMove.start.y == move.end.y and self.previousMove.end.x == move.start.x and self.previousMove.end.y == move.start.y and self.previousMove.direction != move.direction):
+            if(self.previousMove.direction == Direction.UP and move.direction == Direction.DOWN):
+                return True
+            elif(self.previousMove.direction == Direction.DOWN and move.direction == Direction.UP):
+                return True
+            elif(self.previousMove.direction == Direction.LEFT and move.direction == Direction.RIGHT):
+                return True
+            elif(self.previousMove.direction == Direction.RIGHT and move.direction == Direction.LEFT):
+                return True
+        return False
+
+    def tryAppendMove(self, listMoves, moveToAdd):
+        if(not self.isOppositeMove(moveToAdd)):
+            listMoves.append(moveToAdd)
+
+    def tryMove(self, move):
+        if(not self.isOppositeMove(move)):
+            self.move(move)
+            return True
+        return False
