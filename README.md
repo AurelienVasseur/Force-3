@@ -1,6 +1,13 @@
 # Force-3
 Jeu Force 3 années 80.
 
+## Prérequis
+* Git CLI
+* Terminal Unix
+* Python 3.8.2 (ou plus récent)
+* Pip 20.1.1 (ou plus récent) 
+
+
 ## Installation du projet
 1. `git clone https://github.com/Gabryss/Force-3.git`
 2. `cd ./Force-3`
